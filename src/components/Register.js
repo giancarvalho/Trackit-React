@@ -1,4 +1,3 @@
-import logo from "../assets/logo.png";
 import {
   Anchor,
   Button,
@@ -6,8 +5,9 @@ import {
   LoginContainer,
   LogoContainer,
 } from "./shared/style";
+import logo from "../assets/logo.png";
 
-export default function Home() {
+export default function Register() {
   return (
     <>
       <LogoContainer>
@@ -16,9 +16,11 @@ export default function Home() {
       <LoginContainer>
         <Input placeholder="email" />
         <Input placeholder="senha" />
-        <Button>Entrar</Button>
+        <Input placeholder="nome" />
+        <Input placeholder="foto" />
+        <Button>Cadastrar</Button>
       </LoginContainer>
-      <Anchor href="#">Não tem uma conta? Cadastre-se!</Anchor>
+      <Anchor href="#">Já tem uma conta? Faça Login!</Anchor>
     </>
   );
 }
