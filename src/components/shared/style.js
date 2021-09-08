@@ -1,20 +1,18 @@
 import styled from "styled-components";
 
+const Main = styled.main`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 const LogoContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 80%;
   margin: 20% 0 10%;
-`;
-
-const TrackIt = styled.h1`
-  font-family: "Playball", cursive;
-  font-size: ${(props) => props.size};
-  color: #126ba5;
-  :before {
-    content: "TrackIt";
-  }
 `;
 
 const LoginContainer = styled.div`
@@ -34,11 +32,16 @@ const Input = styled.input`
   ::placeholder {
     color: #dbdbdb;
   }
+
+  :focus {
+    border: 1px solid #52b6ff;
+    outline: none !important;
+  }
 `;
 
 const Button = styled.button`
-  height: 45px;
-  width: 100%;
+  height: ${(props) => props.height};
+  width: ${(props) => props.width};
   background-color: #52b6ff;
   text-align: center;
   color: #fff;
@@ -52,4 +55,4 @@ const Anchor = styled.a`
   color: #52b6ff;
 `;
 
-export { LogoContainer, Anchor, Button, Input, LoginContainer, TrackIt };
+export { LogoContainer, Anchor, Button, Input, LoginContainer, Main };
