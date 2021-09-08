@@ -1,15 +1,12 @@
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
 import styled from "styled-components";
-import { Button } from "./shared/style";
+import BottomBar from "./BottomBar";
+import { Button, Input } from "./shared/style";
+import TopBar from "./TopBar";
 
 export default function MyHabits() {
-  const percentage = 50;
   return (
     <>
-      <Top>
-        <TrackIt size="40px" />
-      </Top>
+      <TopBar />
       <Main>
         <TitleContainer>
           <Title>Meus hábitos</Title>
@@ -18,28 +15,33 @@ export default function MyHabits() {
           </Button>
         </TitleContainer>
         <HabitsContainer>
+          <HabitContainer>
+            <Input placeholder="nome do hábito" />
+            <WeekDays>
+              <button>D</button>
+              <button>S</button>
+              <button>T</button>
+              <button>Q</button>
+              <button>Q</button>
+              <button>S</button>
+              <button>S</button>
+            </WeekDays>
+            <div className="buttons">
+              <Button width="84px" height="35px" className="cancelar">
+                Cancelar
+              </Button>
+              <Button width="84px" height="35px">
+                Salvar
+              </Button>
+            </div>
+          </HabitContainer>
           <p>
             Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para
             começar a trackear!
           </p>
         </HabitsContainer>
       </Main>
-      <BottomBar>
-        <p>Hábitos</p>
-        <ProgressBarContainer>
-          <CircularProgressbar
-            value={percentage}
-            text="Hoje"
-            strokeWidth={12}
-            styles={buildStyles({
-              textColor: "white",
-              pathColor: "white",
-              trailColor: "transparent",
-            })}
-          />
-        </ProgressBarContainer>
-        <p>Histórico</p>
-      </BottomBar>
+      <BottomBar />
     </>
   );
 }
@@ -52,29 +54,6 @@ const Main = styled.main`
   background-color: #f2f2f2;
   margin-top: 70px;
   padding: 20px 15px;
-`;
-
-const Top = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 70px;
-  background-color: #126ba5;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 3;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
-  padding: 10px;
-`;
-
-const TrackIt = styled.h1`
-  font-family: "Playball", cursive;
-  font-size: ${(props) => props.size};
-  color: #fff;
-  :before {
-    content: "TrackIt";
-  }
 `;
 
 const TitleContainer = styled.div`
@@ -93,35 +72,46 @@ const Title = styled.h1`
 const HabitsContainer = styled.div`
   width: 100%;
 
-  p {
+  > p {
     font-size: 18px;
     color: #666666;
     line-height: 23px;
   }
 `;
 
-const BottomBar = styled.div`
-  height: 70px;
+const HabitContainer = styled.div`
   width: 100%;
   background-color: #fff;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+  border-radius: 5px;
+  padding: 18px;
+  margin-bottom: 15px;
 
-  p {
+  .buttons {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+  }
+
+  .cancelar {
+    background-color: #fff;
     color: #52b6ff;
+    margin-right: 25px;
   }
 `;
 
-const ProgressBarContainer = styled.div`
-  position: absolute;
-  width: 97px;
-  height: 97px;
-  background-color: #52b6ff;
-  border-radius: 50%;
-  padding: 7px;
-  bottom: 10px;
+const WeekDays = styled.div`
+  width: 100%;
+  margin: 7px 0;
+
+  button {
+    height: 30px;
+    width: 30px;
+    margin-right: 5px;
+    background-color: transparent;
+    border: 1px solid #d4d4d4;
+    border-radius: 4px;
+    color: #d4d4d4;
+    font-size: 18px;
+  }
 `;
