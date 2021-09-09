@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import BottomBar from "./BottomBar";
-import { Button, Input } from "./shared/style";
+import { Button, Input, HabitContainer } from "./shared/style";
 import TopBar from "./TopBar";
 
 export default function MyHabits() {
@@ -76,27 +76,6 @@ const HabitsContainer = styled.div`
     font-size: 18px;
     color: #666666;
     line-height: 23px;
-  }
-`;
-
-const HabitContainer = styled.div`
-  width: 100%;
-  background-color: #fff;
-  border-radius: 5px;
-  padding: 18px;
-  margin-bottom: 15px;
-
-  .buttons {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 15px;
-  }
-
-  .cancelar {
-    background-color: #fff;
-    color: #52b6ff;
-    margin-right: 25px;
   }
 `;
 
