@@ -11,17 +11,20 @@ export default function BottomBar() {
       </Link>
 
       <ProgressBarContainer>
-        <CircularProgressbar
-          value={percentage}
-          text="Hoje"
-          strokeWidth={12}
-          styles={buildStyles({
-            textColor: "white",
-            pathColor: "white",
-            trailColor: "transparent",
-          })}
-        />
+        <Link to="/hoje">
+          <CircularProgressbar
+            value={percentage}
+            text="Hoje"
+            strokeWidth={12}
+            styles={buildStyles({
+              textColor: "white",
+              pathColor: "white",
+              trailColor: "transparent",
+            })}
+          />
+        </Link>
       </ProgressBarContainer>
+
       <Link to="/historico">
         <p>Histórico</p>
       </Link>

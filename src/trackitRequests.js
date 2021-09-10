@@ -29,4 +29,20 @@ function getHabitList(token) {
   return axios.get(`${URL}/habits`, config);
 }
 
-export { registerRequest, loginRequest, createHabitRequest, getHabitList };
+function getTodayHabitList(token) {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  return axios.get(`${URL}/habits/today`, config);
+}
+
+export {
+  registerRequest,
+  loginRequest,
+  createHabitRequest,
+  getHabitList,
+  getTodayHabitList,
+};

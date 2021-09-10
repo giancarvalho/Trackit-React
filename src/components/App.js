@@ -17,7 +17,7 @@ function App() {
         <div className="App">
           <Switch>
             <Route path="/" exact>
-              <Home setUser={setUser} />
+              <Home />
             </Route>
             <Route path="/cadastro" exact>
               <SignUp />

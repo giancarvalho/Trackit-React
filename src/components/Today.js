@@ -1,6 +1,6 @@
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
-import TokenContext from "../contexts/UserContext";
+import UserContext from "../contexts/UserContext";
 import BottomBar from "./BottomBar";
 import { Checkbox } from "react-ionicons";
 import {
@@ -10,11 +10,18 @@ import {
   HabitContainer,
 } from "./shared/stylesApp";
 import TopBar from "./TopBar";
+import { getTodayHabitList } from "../trackitRequests";
 
 export default function Today() {
-  let value = useContext(TokenContext);
+  let { user } = useContext(UserContext);
+  const [todayList, setTodayList] = useState([]);
 
-  console.log(value);
+  useEffect(() => {
+    getTodayHabitList(user.token).then((response) =>
+      setTodayList(response.data)
+    );
+  }, []);
+
   return (
     <>
       <TopBar />
@@ -24,14 +31,22 @@ export default function Today() {
           <p>Nenhum habito concluido ainda</p>
         </TitleContainer>
         <HabitsContainer>
-          <TodayHabitContainer>
-            <div>
-              <h1>Ler 1 Capitulo de Livro</h1>
-              <p>Sequencia atual: 3 dias</p>
-              <p>Seu Recorde: 5 dias</p>
-            </div>
-            <Checkbox color={"#E7E7E7"} height="100px" width="100px" />
-          </TodayHabitContainer>
+          {todayList.map((habit) => {
+            return (
+              <TodayHabitContainer>
+                <div>
+                  <h1>{habit.name}</h1>
+                  <p>Sequencia atual: {habit.currentSequence}</p>
+                  <p>Seu Recorde: {habit.highestSequence}</p>
+                </div>
+                <Checkbox
+                  color={habit.done ? "#8FC549" : "#E7E7E7"}
+                  height="100px"
+                  width="100px"
+                />
+              </TodayHabitContainer>
+            );
+          })}
         </HabitsContainer>
       </Main>
       <BottomBar />
@@ -61,8 +76,5 @@ const TodayHabitContainer = styled(HabitContainer)`
   p {
     font-size: 13px;
     line-height: 17px;
-  }
-
-  button {
   }
 `;

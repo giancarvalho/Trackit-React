@@ -23,7 +23,7 @@ export default function MyHabits() {
 
   useEffect(() => {
     getHabitList(user.token).then((response) => setHabitList(response.data));
-  }, []);
+  }, [insertHabit]);
 
   return (
     <>

@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
 const Main = styled.main`
-  height: calc(100vh - 140px);
+  min-height: calc(100vh - 140px);
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #f2f2f2;
-  margin-top: 70px;
+  margin: 70px 0;
   padding: 20px 15px;
 `;
 
