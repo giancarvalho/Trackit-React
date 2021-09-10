@@ -11,7 +11,7 @@ import {
 import { Button, Input } from "./shared/stylesApp";
 import { useHistory } from "react-router";
 
-export default function Home({ setToken }) {
+export default function Home({ setUser }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
@@ -21,11 +21,11 @@ export default function Home({ setToken }) {
       email,
       password,
     };
-    let erro;
+
     loginRequest(body)
       .then((response) => {
         history.push("/hoje");
-        setToken(response.data.token);
+        setUser(response.data);
       })
       .catch((error) => {
         alert(error.response.data.message);

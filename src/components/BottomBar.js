@@ -1,11 +1,15 @@
 import styled from "styled-components";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { Link } from "react-router-dom";
 export default function BottomBar() {
   const percentage = 50;
   return (
     <BottomBarContainer>
-      <p>Hábitos</p>
+      <Link to="/habitos">
+        <p>Hábitos</p>
+      </Link>
+
       <ProgressBarContainer>
         <CircularProgressbar
           value={percentage}
@@ -18,7 +22,9 @@ export default function BottomBar() {
           })}
         />
       </ProgressBarContainer>
-      <p>Histórico</p>
+      <Link to="/historico">
+        <p>Histórico</p>
+      </Link>
     </BottomBarContainer>
   );
 }
@@ -33,6 +39,10 @@ const BottomBarContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
+
+  a {
+    text-decoration: none;
+  }
 
   p {
     color: #52b6ff;

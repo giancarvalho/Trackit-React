@@ -1,6 +1,10 @@
+import { useContext } from "react";
 import styled from "styled-components";
+import UserContext from "../contexts/UserContext";
 
 export default function TopBar() {
+  const { user } = useContext(UserContext);
+  console.log(user)
   return (
     <Top>
       <TrackIt size="40px" />
@@ -11,6 +15,7 @@ export default function TopBar() {
 const Top = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   height: 70px;
   background-color: #126ba5;

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 import BottomBar from "./BottomBar";
 import {
@@ -10,38 +11,55 @@ import {
 } from "./shared/stylesApp";
 import TopBar from "./TopBar";
 
+function Habit() {
+  return (
+    <HabitContainer>
+      <Input placeholder="nome do hábito" />
+      <WeekDays>
+        <button>D</button>
+        <button>S</button>
+        <button>T</button>
+        <button>Q</button>
+        <button>Q</button>
+        <button>S</button>
+        <button>S</button>
+      </WeekDays>
+      <div className="buttons">
+        <Button width="84px" height="35px" className="cancelar">
+          Cancelar
+        </Button>
+        <Button width="84px" height="35px">
+          Salvar
+        </Button>
+      </div>
+    </HabitContainer>
+  );
+}
+
 export default function MyHabits() {
+  const [insertHabit, setInsertHabit] = useState(null);
+
+  function addHabit() {
+    if (!insertHabit) {
+      setInsertHabit(<Habit />);
+    } else {
+      setInsertHabit(null);
+    }
+  }
+
   return (
     <>
       <TopBar />
       <Main>
         <TitleContainer>
           <Title>Meus hábitos</Title>
-          <Button width="40px" height="35px">
+          <Button width="40px" height="35px" onClick={() => addHabit()}>
             +
           </Button>
         </TitleContainer>
+
         <HabitsContainer>
-          <HabitContainer>
-            <Input placeholder="nome do hábito" />
-            <WeekDays>
-              <button>D</button>
-              <button>S</button>
-              <button>T</button>
-              <button>Q</button>
-              <button>Q</button>
-              <button>S</button>
-              <button>S</button>
-            </WeekDays>
-            <div className="buttons">
-              <Button width="84px" height="35px" className="cancelar">
-                Cancelar
-              </Button>
-              <Button width="84px" height="35px">
-                Salvar
-              </Button>
-            </div>
-          </HabitContainer>
+          {insertHabit}
           <p>
             Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para
             começar a trackear!

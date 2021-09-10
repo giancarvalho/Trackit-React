@@ -5,19 +5,19 @@ import SignUp from "./SignUp";
 import MyHabits from "./MyHabits";
 import Today from "./Today";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import TokenContext from "../contexts/TokenContext";
+import UserContext from "../contexts/UserContext";
 import { useState } from "react";
 
 function App() {
-  const [token, setToken] = useState("");
+  const [user, setUser] = useState("");
 
   return (
-    <TokenContext.Provider value={token}>
+    <UserContext.Provider value={{ user, setUser }}>
       <Router>
         <div className="App">
           <Switch>
             <Route path="/" exact>
-              <Home setToken={setToken} />
+              <Home setUser={setUser} />
             </Route>
             <Route path="/cadastro" exact>
               <SignUp />
@@ -31,7 +31,7 @@ function App() {
           </Switch>
         </div>
       </Router>
-    </TokenContext.Provider>
+    </UserContext.Provider>
   );
 }
 

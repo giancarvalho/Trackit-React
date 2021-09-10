@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import styled from "styled-components";
-import TokenContext from "../contexts/TokenContext";
+import TokenContext from "../contexts/UserContext";
 import BottomBar from "./BottomBar";
 import { Checkbox } from "react-ionicons";
 import {
@@ -56,6 +56,7 @@ const TitleContainer = styled.div`
 const TodayHabitContainer = styled(HabitContainer)`
   display: flex;
   justify-content: space-between;
+  padding: 13px;
 
   p {
     font-size: 13px;
