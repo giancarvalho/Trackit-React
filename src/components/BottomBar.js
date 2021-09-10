@@ -41,7 +41,8 @@ const BottomBarContainer = styled.div`
   left: 0;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
+  padding: 0 10%;
 
   a {
     text-decoration: none;
@@ -60,4 +61,6 @@ const ProgressBarContainer = styled.div`
   border-radius: 50%;
   padding: 7px;
   bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
 `;
