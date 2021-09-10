@@ -4,12 +4,11 @@ import logo from "../assets/logo.png";
 import { loginRequest } from "../trackitRequests";
 import {
   Anchor,
-  Button,
-  Input,
   LoginContainer,
   LogoContainer,
   Main,
-} from "./shared/style";
+} from "./shared/stylesFrontPages";
+import { Button, Input } from "./shared/stylesApp";
 import { useHistory } from "react-router";
 
 export default function Home({ setToken }) {
@@ -22,13 +21,16 @@ export default function Home({ setToken }) {
       email,
       password,
     };
-
+    let erro;
     loginRequest(body)
       .then((response) => {
         history.push("/hoje");
         setToken(response.data.token);
       })
-      .catch((error) => console.log(error.status));
+      .catch((error) => {
+        alert(error.response.data.message);
+        console.log(error.response);
+      });
   }
 
   return (
@@ -43,6 +45,7 @@ export default function Home({ setToken }) {
           onChange={(e) => setEmail(e.target.value)}
         />
         <Input
+          type="password"
           placeholder="senha"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -52,7 +55,7 @@ export default function Home({ setToken }) {
         </Button>
       </LoginContainer>
       <Link to="/cadastro">
-        <Anchor href="#">Não tem uma conta? Cadastre-se!</Anchor>
+        <Anchor>Não tem uma conta? Cadastre-se!</Anchor>
       </Link>
     </Main>
   );

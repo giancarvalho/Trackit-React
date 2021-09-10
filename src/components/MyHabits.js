@@ -1,6 +1,13 @@
 import styled from "styled-components";
 import BottomBar from "./BottomBar";
-import { Button, Input, HabitContainer } from "./shared/style";
+import {
+  Button,
+  Input,
+  HabitContainer,
+  HabitsContainer,
+  Title,
+  Main,
+} from "./shared/stylesApp";
 import TopBar from "./TopBar";
 
 export default function MyHabits() {
@@ -46,37 +53,12 @@ export default function MyHabits() {
   );
 }
 
-const Main = styled.main`
-  height: calc(100vh - 140px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #f2f2f2;
-  margin-top: 70px;
-  padding: 20px 15px;
-`;
-
 const TitleContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-`;
-
-const Title = styled.h1`
-  font-size: 23px;
-  color: #126ba5;
-`;
-
-const HabitsContainer = styled.div`
-  width: 100%;
-
-  > p {
-    font-size: 18px;
-    color: #666666;
-    line-height: 23px;
-  }
 `;
 
 const WeekDays = styled.div`

@@ -1,19 +1,17 @@
 import {
   Anchor,
-  Button,
-  Input,
   LoginContainer,
   LogoContainer,
   Main,
-} from "./shared/style";
+} from "./shared/stylesFrontPages";
+import { Button, Input } from "./shared/stylesApp";
 import logo from "../assets/logo.png";
 import { useState } from "react";
-import TokenContext from "../contexts/TokenContext";
-import { useContext } from "react";
 import { registerRequest } from "../trackitRequests";
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 
-export default function SignUp({ setToken }) {
+export default function SignUp() {
   const history = useHistory();
   const [form, setForm] = useState({
     email: "",
@@ -58,7 +56,9 @@ export default function SignUp({ setToken }) {
           Cadastrar
         </Button>
       </LoginContainer>
-      <Anchor href="#">Já tem uma conta? Faça Login!</Anchor>
+      <Link to="/">
+        <Anchor href="#">Já tem uma conta? Faça Login!</Anchor>
+      </Link>
     </Main>
   );
 }
