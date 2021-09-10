@@ -11,21 +11,56 @@ import {
 } from "./shared/stylesApp";
 import TopBar from "./TopBar";
 
-function Habit() {
+function Day({ index, newHabit, setNewHabit }) {
+  const [selected, setSelected] = useState(false);
+  const week = ["S", "T", "Q", "Q", "S", "S", "D"];
+
+  function addDay(day) {
+    if (!selected) {
+      setSelected(true);
+      setNewHabit({ ...newHabit, days: [...newHabit.days, day] });
+    } else {
+      setSelected(false);
+      let daysClone = newHabit.days.filter((item) => item !== day);
+      setNewHabit({ ...newHabit, days: [...daysClone] });
+    }
+  }
+
+  return (
+    <DayContainer onClick={() => addDay(index + 1)} selected={selected}>
+      {" "}
+      {week[index]}{" "}
+    </DayContainer>
+  );
+}
+
+function Habit({ setInsertHabit }) {
+  const [newHabit, setNewHabit] = useState({ name: "", days: [] });
+
   return (
     <HabitContainer>
-      <Input placeholder="nome do hábito" />
-      <WeekDays>
-        <button>D</button>
-        <button>S</button>
-        <button>T</button>
-        <button>Q</button>
-        <button>Q</button>
-        <button>S</button>
-        <button>S</button>
-      </WeekDays>
+      <Input
+        placeholder="nome do hábito"
+        value={newHabit.name}
+        onChange={(e) => setNewHabit({ ...newHabit, name: e.target.value })}
+      />
+      <DaysContainer>
+        {Array.from({ length: 7 }, (v, index) => (
+          <Day
+            index={index}
+            key={index}
+            setNewHabit={setNewHabit}
+            newHabit={newHabit}
+          />
+        ))}
+      </DaysContainer>
       <div className="buttons">
-        <Button width="84px" height="35px" className="cancelar">
+        <Button
+          width="84px"
+          height="35px"
+          className="cancelar"
+          onClick={() => setInsertHabit(false)}
+        >
           Cancelar
         </Button>
         <Button width="84px" height="35px">
@@ -41,7 +76,7 @@ export default function MyHabits() {
 
   function addHabit() {
     if (!insertHabit) {
-      setInsertHabit(<Habit />);
+      setInsertHabit(<Habit setInsertHabit={setInsertHabit} />);
     } else {
       setInsertHabit(null);
     }
@@ -79,18 +114,18 @@ const TitleContainer = styled.div`
   margin-bottom: 20px;
 `;
 
-const WeekDays = styled.div`
+const DaysContainer = styled.div`
   width: 100%;
   margin: 7px 0;
+`;
 
-  button {
-    height: 30px;
-    width: 30px;
-    margin-right: 5px;
-    background-color: transparent;
-    border: 1px solid #d4d4d4;
-    border-radius: 4px;
-    color: #d4d4d4;
-    font-size: 18px;
-  }
+const DayContainer = styled.button`
+  height: 30px;
+  width: 30px;
+  margin-right: 5px;
+  background-color: ${(props) => (props.selected ? "#CFCFCF" : "transparent")};
+  border: 1px solid #d4d4d4;
+  border-radius: 4px;
+  color: ${(props) => (props.selected ? "#fff" : "#d4d4d4")};
+  font-size: 18px;
 `;

@@ -1,12 +1,22 @@
 import axios from "axios";
-const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth";
+const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit";
 
 function registerRequest(body) {
-  return axios.post(`${URL}/sign-up`, body);
+  return axios.post(`${URL}/auth/sign-up`, body);
 }
 
 function loginRequest(body) {
-  return axios.post(`${URL}/login`, body);
+  return axios.post(`${URL}/auth/login`, body);
 }
 
-export { registerRequest, loginRequest };
+function createHabitRequest(body, token) {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  return axios.post(`${URL}/habits`, body, config);
+}
+
+export { registerRequest, loginRequest, createHabitRequest };

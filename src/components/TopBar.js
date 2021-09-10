@@ -4,10 +4,11 @@ import UserContext from "../contexts/UserContext";
 
 export default function TopBar() {
   const { user } = useContext(UserContext);
-  console.log(user)
+
   return (
     <Top>
       <TrackIt size="40px" />
+      <img src={user.image} alt="profile" />
     </Top>
   );
 }
@@ -25,6 +26,12 @@ const Top = styled.div`
   z-index: 3;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
   padding: 10px;
+
+  img {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+  }
 `;
 
 const TrackIt = styled.h1`
