@@ -19,4 +19,14 @@ function createHabitRequest(body, token) {
   return axios.post(`${URL}/habits`, body, config);
 }
 
-export { registerRequest, loginRequest, createHabitRequest };
+function getHabitList(token) {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  return axios.get(`${URL}/habits`, config);
+}
+
+export { registerRequest, loginRequest, createHabitRequest, getHabitList };
