@@ -13,7 +13,6 @@ import {
 import TopBar from "./TopBar";
 import { checkHabitRequest, getTodayHabitList } from "../trackitRequests";
 
-
 function TodayHabit({ habit, user, setUpdate, update }) {
   function checkHabit(id) {
     if (!habit.done) {
@@ -67,6 +66,8 @@ export default function Today() {
     });
   }, [update]);
 
+  console.log(todayProgress);
+
   function getFormatedDate() {
     let now = new Date();
     let options = { weekday: "long", month: "numeric", day: "numeric" };
@@ -82,13 +83,15 @@ export default function Today() {
     setTodayProgress(donePercentage.toFixed());
   }
 
+  console.log(isNaN(todayProgress));
+
   return (
     <>
       <TopBar />
       <Main>
         <TitleContainer>
           <Title>{getFormatedDate()}</Title>
-          {todayProgress === "0" ? (
+          {todayProgress === "0" || isNaN(todayProgress) ? (
             <p>Nenhum habito concluído ainda</p>
           ) : (
             <p className="done">{todayProgress}% dos habitos concluídos</p>

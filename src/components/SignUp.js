@@ -4,7 +4,7 @@ import {
   LogoContainer,
   Main,
 } from "./shared/stylesFrontPages";
-import { Button, Input } from "./shared/stylesApp";
+import { SubmitButton, Input } from "./shared/stylesApp";
 import logo from "../assets/logo.png";
 import { useState } from "react";
 import { registerRequest } from "../trackitRequests";
@@ -12,6 +12,7 @@ import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 
 export default function SignUp() {
+  const [disabled, setDisabled] = useState(false);
   const history = useHistory();
   const [form, setForm] = useState({
     email: "",
@@ -20,10 +21,15 @@ export default function SignUp() {
     password: "",
   });
 
-  function register() {
+  function register(e) {
+    e.preventDefault();
+    setDisabled(true);
     registerRequest(form)
       .then(() => history.push("/"))
-      .catch((error) => console.log(error.status));
+      .catch((error) => {
+        alert("Ops, ocorreu um erro. Tente novamente.");
+        setDisabled(false);
+      });
   }
 
   return (
@@ -32,29 +38,43 @@ export default function SignUp() {
         <img src={logo} alt="logo-TrackIt" />
       </LogoContainer>
       <LoginContainer>
-        <Input
-          placeholder="email"
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-        />
-        <Input
-          placeholder="senha"
-          value={form.password}
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
-        />
-        <Input
-          placeholder="nome"
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-        />
-        <Input
-          placeholder="foto"
-          value={form.image}
-          onChange={(e) => setForm({ ...form, image: e.target.value })}
-        />
-        <Button width="100%" height="45px" onClick={register}>
-          Cadastrar
-        </Button>
+        <form onSubmit={register}>
+          <fieldset disabled={disabled}>
+            <Input
+              placeholder="email"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              required
+            />
+            <Input
+              placeholder="senha"
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              required
+            />
+            <Input
+              placeholder="nome"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              required
+            />
+            <Input
+              type="url"
+              placeholder="foto"
+              value={form.image}
+              onChange={(e) => setForm({ ...form, image: e.target.value })}
+              required
+            />
+            <SubmitButton
+              type="submit"
+              width="100%"
+              height="45px"
+              disabled={disabled}
+            >
+              Cadastrar
+            </SubmitButton>
+          </fieldset>
+        </form>
       </LoginContainer>
       <Link to="/">
         <Anchor href="#">Já tem uma conta? Faça Login!</Anchor>

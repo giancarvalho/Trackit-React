@@ -13,9 +13,10 @@ function App() {
   const [user, setUser] = useState(getStoredUser());
 
   function getStoredUser() {
-    const storedUser = localStorage.getItem("storedUser");
+    let storedUser = localStorage.getItem("storedUser");
+    storedUser = JSON.parse(storedUser);
 
-    return JSON.parse(storedUser);
+    return storedUser;
   }
 
   return (

@@ -25,7 +25,6 @@ export default function MyHabits() {
     getHabitList(user.token).then((response) => {
       let list = response.data;
       list = list.sort().reverse();
-
       setHabitList(list);
     });
   }, [insertHabit]);

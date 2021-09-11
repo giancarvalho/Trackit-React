@@ -2,7 +2,12 @@ import { useContext, useState } from "react";
 import styled from "styled-components";
 import UserContext from "../contexts/UserContext";
 import { createHabitRequest } from "../trackitRequests";
-import { Button, HabitContainer, Input } from "./shared/stylesApp";
+import {
+  Button,
+  SubmitButton,
+  HabitContainer,
+  Input,
+} from "./shared/stylesApp";
 import Loader from "react-loader-spinner";
 
 function Day({ index, newHabit, setNewHabit, isSelected, created }) {
@@ -42,8 +47,8 @@ export default function Habit({ setInsertHabit, habitData, created }) {
 
   function createHabit(event) {
     event.preventDefault();
-    setDisabled(true);
     if (newHabit.name.length > 0 && newHabit.days.length > 0) {
+      setDisabled(true);
       createHabitRequest(newHabit, user.token)
         .then((response) => setInsertHabit(null))
         .catch((error) => {
@@ -101,18 +106,14 @@ export default function Habit({ setInsertHabit, habitData, created }) {
             >
               Cancelar
             </Button>
-            <Button
+            <SubmitButton
               type="submit"
               width="84px"
               height="35px"
               disabled={disabled}
             >
-              {disabled ? (
-                <Loader type="ThreeDots" color="#fff" height={35} width={35} />
-              ) : (
-                "Salvar"
-              )}
-            </Button>
+              Salvar
+            </SubmitButton>
           </div>
         </fieldset>
       </form>

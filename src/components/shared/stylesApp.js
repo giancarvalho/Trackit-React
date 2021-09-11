@@ -1,4 +1,17 @@
 import styled from "styled-components";
+import Loader from "react-loader-spinner";
+
+function SubmitButton({ children, disabled, height, width }) {
+  return (
+    <Button height={height} width={width} disabled={disabled}>
+      {disabled ? (
+        <Loader type="ThreeDots" color="#fff" height={35} width={35} />
+      ) : (
+        children
+      )}
+    </Button>
+  );
+}
 
 const Main = styled.main`
   min-height: calc(100vh - 140px);
@@ -83,4 +96,12 @@ const HabitsContainer = styled.div`
   }
 `;
 
-export { HabitContainer, Input, Button, Main, Title, HabitsContainer };
+export {
+  HabitContainer,
+  Input,
+  SubmitButton,
+  Main,
+  Title,
+  HabitsContainer,
+  Button,
+};

@@ -8,38 +8,44 @@ import {
   LogoContainer,
   Main,
 } from "./shared/stylesFrontPages";
-import { Button, Input } from "./shared/stylesApp";
+import { SubmitButton, Input } from "./shared/stylesApp";
 import { useHistory } from "react-router";
 import UserContext from "../contexts/UserContext";
 
 export default function Home() {
   const [email, setEmail] = useState("");
+  const [disabled, setDisabled] = useState(false);
   const [password, setPassword] = useState("");
   const history = useHistory();
   const { user, setUser } = useContext(UserContext);
-
-  console.log(user);
 
   function storeUser(userData) {
     localStorage.setItem("storedUser", JSON.stringify(userData));
   }
 
-  if (!!user.token) {
+  if (!!user) {
     console.log("im here");
     history.push("/hoje");
   }
 
-  function LogIn() {
+  function LogIn(e) {
+    e.preventDefault();
+    setDisabled(true);
     let body = {
       email,
       password,
     };
 
-    loginRequest(body).then((response) => {
-      setUser(response.data);
-      storeUser(response.data);
-      history.push("/hoje");
-    });
+    loginRequest(body)
+      .then((response) => {
+        setUser(response.data);
+        storeUser(response.data);
+        history.push("/hoje");
+      })
+      .catch((error) => {
+        alert("Ocorreu um erro, tente novamente");
+        setDisabled(false);
+      });
   }
 
   return (
@@ -48,20 +54,29 @@ export default function Home() {
         <img src={logo} alt="logo-TrackIt" />
       </LogoContainer>
       <LoginContainer>
-        <Input
-          placeholder="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <Input
-          type="password"
-          placeholder="senha"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Button width="100%" height="45px" onClick={LogIn}>
-          Entrar
-        </Button>
+        <form onSubmit={LogIn}>
+          <fieldset disabled={disabled}>
+            <Input
+              placeholder="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input
+              type="password"
+              placeholder="senha"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <SubmitButton
+              type="submit"
+              width="100%"
+              height="45px"
+              disabled={disabled}
+            >
+              Entrar
+            </SubmitButton>
+          </fieldset>
+        </form>
       </LoginContainer>
       <Link to="/cadastro">
         <Anchor>Não tem uma conta? Cadastre-se!</Anchor>
