@@ -39,10 +39,21 @@ function getTodayHabitList(token) {
   return axios.get(`${URL}/habits/today`, config);
 }
 
+function checkHabitRequest(id, operation, token) {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  return axios.post(`${URL}/habits/${id}/${operation}`, "", config);
+}
+
 export {
   registerRequest,
   loginRequest,
   createHabitRequest,
   getHabitList,
   getTodayHabitList,
+  checkHabitRequest,
 };

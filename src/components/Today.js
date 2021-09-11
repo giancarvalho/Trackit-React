@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 import UserContext from "../contexts/UserContext";
+import ProgressContext from "../contexts/ProgressContext";
 import BottomBar from "./BottomBar";
 import { Checkbox } from "react-ionicons";
 import {
@@ -10,16 +11,58 @@ import {
   HabitContainer,
 } from "./shared/stylesApp";
 import TopBar from "./TopBar";
-import { getTodayHabitList } from "../trackitRequests";
+import { checkHabitRequest, getTodayHabitList } from "../trackitRequests";
+
+function TodayHabit({ habit, user, setUpdate, update }) {
+  function checkHabit(id) {
+    if (!habit.done) {
+      checkHabitRequest(id, "check", user.token)
+        .then(() => setUpdate(update + 1))
+        .catch(console.log("Failed"));
+      return;
+    }
+
+    checkHabitRequest(id, "uncheck", user.token)
+      .then(() => setUpdate((update = update + 1)))
+      .catch(console.log("Failed"));
+  }
+
+  return (
+    <TodayHabitContainer>
+      <div>
+        <h1>{habit.name}</h1>
+        <p>
+          Sequencia atual:{" "}
+          {habit.done ? (
+            <span className="done">{habit.currentSequence} dias</span>
+          ) : (
+            <span>{habit.currentSequence} dias</span>
+          )}{" "}
+        </p>
+        <p>Seu Recorde: {habit.highestSequence} dias</p>
+      </div>
+      <Checkbox
+        color={habit.done ? "#8FC549" : "#E7E7E7"}
+        height="100px"
+        width="100px"
+        onClick={() => checkHabit(habit.id)}
+      />
+    </TodayHabitContainer>
+  );
+}
 
 export default function Today() {
   let { user } = useContext(UserContext);
   const [todayList, setTodayList] = useState([]);
+  const [todayProgress, setTodayProgress] = useState(0);
+  const [update, setUpdate] = useState(0);
+
   useEffect(() => {
-    getTodayHabitList(user.token).then((response) =>
-      setTodayList(response.data)
-    );
-  }, [user]);
+    getTodayHabitList(user.token).then((response) => {
+      setTodayList(response.data);
+      calculateProgress(response.data);
+    });
+  }, [update]);
 
   function getFormatedDate() {
     let now = new Date();
@@ -29,34 +72,38 @@ export default function Today() {
     return date.charAt(0).toUpperCase() + date.slice(1);
   }
 
+  function calculateProgress(habitList) {
+    let doneTask = habitList.filter((item) => item.done);
+    let donePercentage = (doneTask.length / habitList.length) * 100;
+
+    setTodayProgress(donePercentage.toFixed());
+  }
+
   return (
     <>
       <TopBar />
       <Main>
         <TitleContainer>
           <Title>{getFormatedDate()}</Title>
-          <p>Nenhum habito concluido ainda</p>
+          {todayProgress === "0" ? (
+            <p>Nenhum habito concluído ainda</p>
+          ) : (
+            <p className="done">{todayProgress}% dos habitos concluídos</p>
+          )}
         </TitleContainer>
         <HabitsContainer>
-          {todayList.map((habit, index) => {
-            return (
-              <TodayHabitContainer key={index}>
-                <div>
-                  <h1>{habit.name}</h1>
-                  <p>Sequencia atual: {habit.currentSequence}</p>
-                  <p>Seu Recorde: {habit.highestSequence}</p>
-                </div>
-                <Checkbox
-                  color={habit.done ? "#8FC549" : "#E7E7E7"}
-                  height="100px"
-                  width="100px"
-                />
-              </TodayHabitContainer>
-            );
-          })}
+          {todayList.map((habit, index) => (
+            <TodayHabit
+              habit={habit}
+              user={user}
+              key={index}
+              update={update}
+              setUpdate={setUpdate}
+            />
+          ))}
         </HabitsContainer>
       </Main>
-      <BottomBar />
+      <BottomBar todayProgress={todayProgress} />
     </>
   );
 }
@@ -73,6 +120,10 @@ const TitleContainer = styled.div`
     color: #bababa;
     margin-top: 8px;
   }
+
+  .done {
+    color: #8fc549;
+  }
 `;
 
 const TodayHabitContainer = styled(HabitContainer)`
@@ -83,5 +134,9 @@ const TodayHabitContainer = styled(HabitContainer)`
   p {
     font-size: 13px;
     line-height: 17px;
+  }
+
+  .done {
+    color: #8fc549;
   }
 `;
