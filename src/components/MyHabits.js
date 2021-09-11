@@ -22,7 +22,12 @@ export default function MyHabits() {
   }
 
   useEffect(() => {
-    getHabitList(user.token).then((response) => setHabitList(response.data));
+    getHabitList(user.token).then((response) => {
+      let list = response.data;
+      list = list.sort().reverse();
+
+      setHabitList(list);
+    });
   }, [insertHabit]);
 
   return (

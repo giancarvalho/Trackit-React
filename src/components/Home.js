@@ -16,7 +16,18 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
-  const { setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
+
+  console.log(user);
+
+  function storeUser(userData) {
+    localStorage.setItem("storedUser", JSON.stringify(userData));
+  }
+
+  if (!!user.token) {
+    console.log("im here");
+    history.push("/hoje");
+  }
 
   function LogIn() {
     let body = {
@@ -26,6 +37,7 @@ export default function Home() {
 
     loginRequest(body).then((response) => {
       setUser(response.data);
+      storeUser(response.data);
       history.push("/hoje");
     });
   }

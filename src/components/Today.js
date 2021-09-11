@@ -59,8 +59,10 @@ export default function Today() {
 
   useEffect(() => {
     getTodayHabitList(user.token).then((response) => {
-      setTodayList(response.data);
-      calculateProgress(response.data);
+      let list = response.data;
+      list = list.sort().reverse();
+      setTodayList(list);
+      calculateProgress(list);
     });
   }, [update]);
 
