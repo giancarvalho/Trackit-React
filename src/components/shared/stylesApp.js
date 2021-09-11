@@ -31,6 +31,12 @@ const HabitContainer = styled.div`
   margin-bottom: 15px;
   color: #666666;
 
+  div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
   h1 {
     font-size: 20px;
     margin: 10px 0;

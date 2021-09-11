@@ -49,6 +49,16 @@ function checkHabitRequest(id, operation, token) {
   return axios.post(`${URL}/habits/${id}/${operation}`, "", config);
 }
 
+function deleteHabitRequest(id, token) {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  return axios.delete(`${URL}/habits/${id}/`, config);
+}
+
 export {
   registerRequest,
   loginRequest,
@@ -56,4 +66,5 @@ export {
   getHabitList,
   getTodayHabitList,
   checkHabitRequest,
+  deleteHabitRequest,
 };

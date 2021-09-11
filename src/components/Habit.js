@@ -1,14 +1,14 @@
 import { useContext, useState } from "react";
 import styled from "styled-components";
 import UserContext from "../contexts/UserContext";
-import { createHabitRequest } from "../trackitRequests";
+import { createHabitRequest, deleteHabitRequest } from "../trackitRequests";
 import {
   Button,
   SubmitButton,
   HabitContainer,
   Input,
 } from "./shared/stylesApp";
-import Loader from "react-loader-spinner";
+import { TrashOutline } from "react-ionicons";
 
 function Day({ index, newHabit, setNewHabit, isSelected, created }) {
   const [selected, setSelected] = useState(false);
@@ -60,10 +60,31 @@ export default function Habit({ setInsertHabit, habitData, created }) {
     }
   }
 
+  function deleteHabit(id) {
+    let confirmation = window.confirm("Quer mesmo deletar esse habito?");
+
+    if (confirmation) {
+      deleteHabitRequest(id, user.token);
+      return;
+    }
+
+    return;
+  }
+
   if (created) {
     return (
       <HabitContainer>
-        <h1>{habitData.name} </h1>
+        <div>
+          <h1>{habitData.name} </h1>
+
+          <TrashOutline
+            color={"#666666"}
+            height="20px"
+            width="20px"
+            onClick={() => deleteHabit(habitData.id)}
+          />
+        </div>
+
         <DaysContainer>
           {Array.from({ length: 7 }, (v, index) => (
             <Day
