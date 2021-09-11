@@ -36,14 +36,19 @@ function Day({ index, newHabit, setNewHabit, isSelected, created }) {
 
 export default function Habit({ setInsertHabit, habitData, created }) {
   const [newHabit, setNewHabit] = useState({ name: "", days: [] });
+  const [disabled, setDisabled] = useState(false);
   const { user } = useContext(UserContext);
 
   function createHabit(event) {
     event.preventDefault();
+    setDisabled(true);
     if (newHabit.name.length > 0 && newHabit.days.length > 0) {
       createHabitRequest(newHabit, user.token)
         .then((response) => setInsertHabit(null))
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          alert("ocorreu um erro. Tente novamente.");
+          setDisabled(false);
+        });
     } else {
       alert("escreva o nome do habito e selecione o dia para continuar");
     }
@@ -70,34 +75,36 @@ export default function Habit({ setInsertHabit, habitData, created }) {
   return (
     <HabitContainer>
       <form onSubmit={createHabit}>
-        <Input
-          placeholder="nome do hábito"
-          value={newHabit.name}
-          onChange={(e) => setNewHabit({ ...newHabit, name: e.target.value })}
-        />
-        <DaysContainer>
-          {Array.from({ length: 7 }, (v, index) => (
-            <Day
-              index={index}
-              key={index}
-              setNewHabit={setNewHabit}
-              newHabit={newHabit}
-            />
-          ))}
-        </DaysContainer>
-        <div className="buttons">
-          <Button
-            width="84px"
-            height="35px"
-            className="cancelar"
-            onClick={() => setInsertHabit(false)}
-          >
-            Cancelar
-          </Button>
-          <Button type="submit" width="84px" height="35px">
-            Salvar
-          </Button>
-        </div>
+        <fieldset disabled={disabled}>
+          <Input
+            placeholder="nome do hábito"
+            value={newHabit.name}
+            onChange={(e) => setNewHabit({ ...newHabit, name: e.target.value })}
+          />
+          <DaysContainer>
+            {Array.from({ length: 7 }, (v, index) => (
+              <Day
+                index={index}
+                key={index}
+                setNewHabit={setNewHabit}
+                newHabit={newHabit}
+              />
+            ))}
+          </DaysContainer>
+          <div className="buttons">
+            <Button
+              width="84px"
+              height="35px"
+              className="cancelar"
+              onClick={() => setInsertHabit(false)}
+            >
+              Cancelar
+            </Button>
+            <Button type="submit" width="84px" height="35px">
+              Salvar
+            </Button>
+          </div>
+        </fieldset>
       </form>
     </HabitContainer>
   );
