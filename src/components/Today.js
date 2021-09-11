@@ -18,13 +18,13 @@ function TodayHabit({ habit, user, setUpdate, update }) {
     if (!habit.done) {
       checkHabitRequest(id, "check", user.token)
         .then(() => setUpdate(update + 1))
-        .catch(console.log("Failed"));
+        .catch(() => alert("Ocorreu um problema. Tente Novamente"));
       return;
     }
 
     checkHabitRequest(id, "uncheck", user.token)
-      .then(() => setUpdate((update = update + 1)))
-      .catch(console.log("Failed"));
+      .then(() => setUpdate(update + 1))
+      .catch(() => alert("Ocorreu um problema. Tente Novamente"));
   }
 
   return (
@@ -82,8 +82,6 @@ export default function Today() {
 
     setTodayProgress(donePercentage.toFixed());
   }
-
-  console.log(isNaN(todayProgress));
 
   return (
     <>
