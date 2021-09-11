@@ -83,8 +83,6 @@ export default function Today() {
     setTodayProgress(donePercentage.toFixed());
   }
 
-  console.log(isNaN(todayProgress));
-
   return (
     <>
       <TopBar />
