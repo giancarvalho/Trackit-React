@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { loginRequest } from "../trackitRequests";
@@ -10,11 +10,13 @@ import {
 } from "./shared/stylesFrontPages";
 import { Button, Input } from "./shared/stylesApp";
 import { useHistory } from "react-router";
+import UserContext from "../contexts/UserContext";
 
-export default function Home({ setUser }) {
+export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
+  const { setUser } = useContext(UserContext);
 
   function LogIn() {
     let body = {
@@ -22,15 +24,10 @@ export default function Home({ setUser }) {
       password,
     };
 
-    loginRequest(body)
-      .then((response) => {
-        history.push("/hoje");
-        setUser(response.data);
-      })
-      .catch((error) => {
-        alert(error.response.data.message);
-        console.log(error.response);
-      });
+    loginRequest(body).then((response) => {
+      setUser(response.data);
+      history.push("/hoje");
+    });
   }
 
   return (

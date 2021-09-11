@@ -15,25 +15,32 @@ import { getTodayHabitList } from "../trackitRequests";
 export default function Today() {
   let { user } = useContext(UserContext);
   const [todayList, setTodayList] = useState([]);
-
   useEffect(() => {
     getTodayHabitList(user.token).then((response) =>
       setTodayList(response.data)
     );
-  }, []);
+  }, [user]);
+
+  function getFormatedDate() {
+    let now = new Date();
+    let options = { weekday: "long", month: "numeric", day: "numeric" };
+    let date = now.toLocaleString("pt-BR", options);
+
+    return date.charAt(0).toUpperCase() + date.slice(1);
+  }
 
   return (
     <>
       <TopBar />
       <Main>
         <TitleContainer>
-          <Title>Segunda, 17/05</Title>
+          <Title>{getFormatedDate()}</Title>
           <p>Nenhum habito concluido ainda</p>
         </TitleContainer>
         <HabitsContainer>
-          {todayList.map((habit) => {
+          {todayList.map((habit, index) => {
             return (
-              <TodayHabitContainer>
+              <TodayHabitContainer key={index}>
                 <div>
                   <h1>{habit.name}</h1>
                   <p>Sequencia atual: {habit.currentSequence}</p>
