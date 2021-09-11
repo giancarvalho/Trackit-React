@@ -13,6 +13,7 @@ import {
 import TopBar from "./TopBar";
 import { checkHabitRequest, getTodayHabitList } from "../trackitRequests";
 
+
 function TodayHabit({ habit, user, setUpdate, update }) {
   function checkHabit(id) {
     if (!habit.done) {

@@ -59,7 +59,7 @@ const Input = styled.input`
 const Button = styled.button`
   height: ${(props) => props.height};
   width: ${(props) => props.width};
-  background-color: #52b6ff;
+  background-color: ${(props) => (props.disabled ? "#86CCFF" : "#52b6ff")};
   text-align: center;
   color: #fff;
   border: none;

@@ -1,5 +1,6 @@
 import "../reset.css";
 import "../global.css";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Home from "./Home";
 import SignUp from "./SignUp";
 import MyHabits from "./MyHabits";

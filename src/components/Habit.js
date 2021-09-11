@@ -3,6 +3,7 @@ import styled from "styled-components";
 import UserContext from "../contexts/UserContext";
 import { createHabitRequest } from "../trackitRequests";
 import { Button, HabitContainer, Input } from "./shared/stylesApp";
+import Loader from "react-loader-spinner";
 
 function Day({ index, newHabit, setNewHabit, isSelected, created }) {
   const [selected, setSelected] = useState(false);
@@ -100,8 +101,17 @@ export default function Habit({ setInsertHabit, habitData, created }) {
             >
               Cancelar
             </Button>
-            <Button type="submit" width="84px" height="35px">
-              Salvar
+            <Button
+              type="submit"
+              width="84px"
+              height="35px"
+              disabled={disabled}
+            >
+              {disabled ? (
+                <Loader type="ThreeDots" color="#fff" height={35} width={35} />
+              ) : (
+                "Salvar"
+              )}
             </Button>
           </div>
         </fieldset>
