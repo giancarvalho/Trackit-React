@@ -24,7 +24,6 @@ export default function Home() {
   }
 
   if (!!user) {
-    console.log("im here");
     history.push("/hoje");
   }
 

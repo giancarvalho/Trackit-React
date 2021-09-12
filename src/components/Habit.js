@@ -54,7 +54,6 @@ export default function Habit({ setInsertHabit, habitData, created }) {
   const { user } = useContext(UserContext);
   const week = { Seg: 1, Ter: 2, Quar: 3, Quin: 4, Sex: 5, Sab: 6, Dom: 0 };
 
-  console.log(habitData);
   function createHabit(event) {
     event.preventDefault();
     if (newHabit.name.length > 0 && newHabit.days.length > 0) {

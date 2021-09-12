@@ -1,7 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 import UserContext from "../contexts/UserContext";
-import ProgressContext from "../contexts/ProgressContext";
 import BottomBar from "./BottomBar";
 import { Checkbox } from "react-ionicons";
 import {
@@ -12,6 +11,7 @@ import {
 } from "./shared/stylesApp";
 import TopBar from "./TopBar";
 import { checkHabitRequest, getTodayHabitList } from "../trackitRequests";
+import ProgressContext from "../contexts/ProgressContext";
 
 function TodayHabit({ habit, user, setUpdate, update }) {
   function checkHabit(id) {
@@ -57,8 +57,6 @@ export default function Today() {
   const [todayProgress, setTodayProgress] = useState(0);
   const [update, setUpdate] = useState(0);
 
-  console.log(todayList);
-
   useEffect(() => {
     getTodayHabitList(user.token).then((response) => {
       let list = response.data;
@@ -67,8 +65,6 @@ export default function Today() {
       calculateProgress(list);
     });
   }, [update]);
-
-  console.log(todayProgress);
 
   function getFormatedDate() {
     let now = new Date();
@@ -109,7 +105,9 @@ export default function Today() {
           ))}
         </HabitsContainer>
       </Main>
-      <BottomBar todayProgress={todayProgress} />
+      <ProgressContext.Provider value={todayProgress}>
+        <BottomBar />
+      </ProgressContext.Provider>
     </>
   );
 }

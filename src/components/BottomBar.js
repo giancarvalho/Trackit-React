@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 import { useContext } from "react";
 import ProgressContext from "../contexts/ProgressContext";
 
-export default function BottomBar({ todayProgress }) {
+export default function BottomBar() {
+  const todayProgress = useContext(ProgressContext);
   const percentage = Number(todayProgress);
 
   return (
