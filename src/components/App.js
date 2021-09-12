@@ -8,10 +8,11 @@ import Today from "./Today";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import UserContext from "../contexts/UserContext";
 import { useState } from "react";
+import ProgressContext from "../contexts/ProgressContext";
 
 function App() {
   const [user, setUser] = useState(getStoredUser());
-
+  const [todayProgress, setTodayProgress] = useState(0);
   function getStoredUser() {
     let storedUser = localStorage.getItem("storedUser");
     storedUser = JSON.parse(storedUser);
@@ -30,12 +31,16 @@ function App() {
             <Route path="/cadastro" exact>
               <SignUp />
             </Route>
-            <Route path="/hoje" exact>
-              <Today />
-            </Route>
-            <Route path="/habitos" exact>
-              <MyHabits />
-            </Route>
+            <ProgressContext.Provider
+              value={{ todayProgress, setTodayProgress }}
+            >
+              <Route path="/hoje" exact>
+                <Today />
+              </Route>
+              <Route path="/habitos" exact>
+                <MyHabits />
+              </Route>
+            </ProgressContext.Provider>
           </Switch>
         </div>
       </Router>

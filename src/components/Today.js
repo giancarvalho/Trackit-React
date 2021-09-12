@@ -11,6 +11,8 @@ import {
 } from "./shared/stylesApp";
 import TopBar from "./TopBar";
 import { checkHabitRequest, getTodayHabitList } from "../trackitRequests";
+import { Route } from "react-router";
+import MyHabits from "./MyHabits";
 import ProgressContext from "../contexts/ProgressContext";
 
 function TodayHabit({ habit, user, setUpdate, update }) {
@@ -54,7 +56,7 @@ function TodayHabit({ habit, user, setUpdate, update }) {
 export default function Today() {
   let { user } = useContext(UserContext);
   const [todayList, setTodayList] = useState([]);
-  const [todayProgress, setTodayProgress] = useState(0);
+  const { todayProgress, setTodayProgress } = useContext(ProgressContext);
   const [update, setUpdate] = useState(0);
 
   useEffect(() => {
@@ -105,9 +107,7 @@ export default function Today() {
           ))}
         </HabitsContainer>
       </Main>
-      <ProgressContext.Provider value={todayProgress}>
-        <BottomBar />
-      </ProgressContext.Provider>
+      <BottomBar />
     </>
   );
 }
