@@ -9,6 +9,7 @@ import {
   Input,
 } from "./shared/stylesApp";
 import { TrashOutline } from "react-ionicons";
+import ProgressContext from "../contexts/ProgressContext";
 
 function Day({ dayNumber, dayName, newHabit, setNewHabit, isSelected }) {
   const [selected, setSelected] = useState(isSelected);
@@ -39,13 +40,21 @@ function HabitForm({ setInsertHabit, newHabit, setNewHabit }) {
   const [disabled, setDisabled] = useState(false);
   const { user } = useContext(UserContext);
   const week = { Seg: 1, Ter: 2, Quar: 3, Quin: 4, Sex: 5, Sab: 6, Dom: 0 };
-  console.log(newHabit);
+  const { setTodayProgress, todayProgress } = useContext(ProgressContext);
+
   function createHabit(event) {
     event.preventDefault();
     if (newHabit.name.length > 0 && newHabit.days.length > 0) {
       setDisabled(true);
       createHabitRequest(newHabit, user.token)
-        .then((response) => setInsertHabit(null))
+        .then((response) => {
+          setInsertHabit(null);
+          setNewHabit({ name: "", days: [] });
+          setTodayProgress({
+            ...todayProgress.progress,
+            update: todayProgress.update + 1,
+          });
+        })
         .catch((error) => {
           alert("ocorreu um erro. Tente novamente.");
           setDisabled(false);
@@ -105,13 +114,21 @@ function HabitForm({ setInsertHabit, newHabit, setNewHabit }) {
 
 function Habit({ habitData }) {
   const { user } = useContext(UserContext);
+  const { setTodayProgress, todayProgress } = useContext(ProgressContext);
   const week = { Seg: 1, Ter: 2, Quar: 3, Quin: 4, Sex: 5, Sab: 6, Dom: 0 };
 
   function deleteHabit(id) {
     let confirmation = window.confirm("Quer mesmo deletar esse habito?");
 
     if (confirmation) {
-      deleteHabitRequest(id, user.token);
+      deleteHabitRequest(id, user.token)
+        .then(() =>
+          setTodayProgress({
+            ...todayProgress.progress,
+            update: todayProgress.update + 1,
+          })
+        )
+        .catch(() => alert("Ocorreu um erro. Tente novamente."));
       return;
     }
 

@@ -10,22 +10,35 @@ import {
   HabitContainer,
 } from "./shared/stylesApp";
 import TopBar from "./TopBar";
-import { checkHabitRequest, getTodayHabitList } from "../trackitRequests";
-import { Route } from "react-router";
-import MyHabits from "./MyHabits";
+import { checkHabitRequest } from "../trackitRequests";
 import ProgressContext from "../contexts/ProgressContext";
 
-function TodayHabit({ habit, user, setUpdate, update }) {
+function TodayHabit({ habit, user }) {
+  const [checked, setChecked] = useState(habit.done);
+  const { todayProgress, setTodayProgress } = useContext(ProgressContext);
+
   function checkHabit(id) {
     if (!habit.done) {
+      setChecked(true);
       checkHabitRequest(id, "check", user.token)
-        .then(() => setUpdate(update + 1))
+        .then(() =>
+          setTodayProgress({
+            ...todayProgress.progress,
+            update: todayProgress.update + 1,
+          })
+        )
         .catch(() => alert("Ocorreu um problema. Tente Novamente"));
       return;
     }
 
+    setChecked(false);
     checkHabitRequest(id, "uncheck", user.token)
-      .then(() => setUpdate(update + 1))
+      .then(() =>
+        setTodayProgress({
+          ...todayProgress.progress,
+          update: todayProgress.update + 1,
+        })
+      )
       .catch(() => alert("Ocorreu um problema. Tente Novamente"));
   }
 
@@ -35,7 +48,7 @@ function TodayHabit({ habit, user, setUpdate, update }) {
         <h1>{habit.name}</h1>
         <p>
           Sequencia atual:{" "}
-          {habit.done ? (
+          {checked ? (
             <span className="done">{habit.currentSequence} dias</span>
           ) : (
             <span>{habit.currentSequence} dias</span>
@@ -44,7 +57,7 @@ function TodayHabit({ habit, user, setUpdate, update }) {
         <p>Seu Recorde: {habit.highestSequence} dias</p>
       </div>
       <Checkbox
-        color={habit.done ? "#8FC549" : "#E7E7E7"}
+        color={checked ? "#8FC549" : "#E7E7E7"}
         height="100px"
         width="100px"
         onClick={() => checkHabit(habit.id)}
@@ -53,20 +66,9 @@ function TodayHabit({ habit, user, setUpdate, update }) {
   );
 }
 
-export default function Today() {
+export default function Today({ todayList, setTodayList }) {
   let { user } = useContext(UserContext);
-  const [todayList, setTodayList] = useState([]);
   const { todayProgress, setTodayProgress } = useContext(ProgressContext);
-  const [update, setUpdate] = useState(0);
-
-  useEffect(() => {
-    getTodayHabitList(user.token).then((response) => {
-      let list = response.data;
-      list = list.sort().reverse();
-      setTodayList(list);
-      calculateProgress(list);
-    });
-  }, [update]);
 
   function getFormatedDate() {
     let now = new Date();
@@ -74,13 +76,6 @@ export default function Today() {
     let date = now.toLocaleString("pt-BR", options);
 
     return date.charAt(0).toUpperCase() + date.slice(1);
-  }
-
-  function calculateProgress(habitList) {
-    let doneTask = habitList.filter((item) => item.done);
-    let donePercentage = (doneTask.length / habitList.length) * 100;
-
-    setTodayProgress(donePercentage.toFixed());
   }
 
   return (
@@ -97,13 +92,7 @@ export default function Today() {
         </TitleContainer>
         <HabitsContainer>
           {todayList.map((habit, index) => (
-            <TodayHabit
-              habit={habit}
-              user={user}
-              key={index}
-              update={update}
-              setUpdate={setUpdate}
-            />
+            <TodayHabit habit={habit} user={user} key={index} />
           ))}
         </HabitsContainer>
       </Main>

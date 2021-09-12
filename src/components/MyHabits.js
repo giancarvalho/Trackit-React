@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
+import ProgressContext from "../contexts/ProgressContext";
 import UserContext from "../contexts/UserContext";
 import { getHabitList } from "../trackitRequests";
 import BottomBar from "./BottomBar";
@@ -9,8 +10,11 @@ import TopBar from "./TopBar";
 
 export default function MyHabits() {
   const [insertHabit, setInsertHabit] = useState(false);
-  const [habitList, setHabitList] = useState([]);
+  const [habitList, setHabitList] = useState(0);
   const [newHabit, setNewHabit] = useState({ name: "", days: [] });
+
+  const { todayProgress } = useContext(ProgressContext);
+
   const { user } = useContext(UserContext);
 
   function addHabit() {
@@ -27,7 +31,7 @@ export default function MyHabits() {
       list = list.sort().reverse();
       setHabitList(list);
     });
-  }, [insertHabit]);
+  }, [todayProgress]);
 
   return (
     <>

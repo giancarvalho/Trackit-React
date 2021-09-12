@@ -7,17 +7,39 @@ import MyHabits from "./MyHabits";
 import Today from "./Today";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import UserContext from "../contexts/UserContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProgressContext from "../contexts/ProgressContext";
+import { getTodayHabitList } from "../trackitRequests";
 
 function App() {
   const [user, setUser] = useState(getStoredUser());
-  const [todayProgress, setTodayProgress] = useState(0);
+  const [todayProgress, setTodayProgress] = useState({
+    progress: 0,
+    update: 0,
+  });
+  const [todayList, setTodayList] = useState([]);
+
   function getStoredUser() {
     let storedUser = localStorage.getItem("storedUser");
     storedUser = JSON.parse(storedUser);
 
     return storedUser;
+  }
+
+  useEffect(() => {
+    getTodayHabitList(user.token).then((response) => {
+      let list = response.data;
+      list = list.sort().reverse();
+      setTodayList(list);
+      calculateProgress(list);
+    });
+  }, [todayProgress]);
+
+  function calculateProgress(habitList) {
+    let doneTask = habitList.filter((item) => item.done);
+    let donePercentage = (doneTask.length / habitList.length) * 100;
+
+    setTodayProgress({ ...todayProgress, progress: donePercentage });
   }
 
   return (
@@ -35,7 +57,7 @@ function App() {
               value={{ todayProgress, setTodayProgress }}
             >
               <Route path="/hoje" exact>
-                <Today />
+                <Today todayList={todayList} setTodayList={setTodayList} />
               </Route>
               <Route path="/habitos" exact>
                 <MyHabits />
