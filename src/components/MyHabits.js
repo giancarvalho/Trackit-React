@@ -3,19 +3,19 @@ import styled from "styled-components";
 import UserContext from "../contexts/UserContext";
 import { getHabitList } from "../trackitRequests";
 import BottomBar from "./BottomBar";
-import Habit from "./Habit";
+import { Habit, HabitForm } from "./Habit";
 import { Button, HabitsContainer, Title, Main } from "./shared/stylesApp";
 import TopBar from "./TopBar";
 
 export default function MyHabits() {
-  const [insertHabit, setInsertHabit] = useState(null);
+  const [insertHabit, setInsertHabit] = useState(false);
   const [habitList, setHabitList] = useState([]);
-
+  const [newHabit, setNewHabit] = useState({ name: "", days: [] });
   const { user } = useContext(UserContext);
 
   function addHabit() {
     if (!insertHabit) {
-      setInsertHabit(<Habit setInsertHabit={setInsertHabit} />);
+      setInsertHabit(true);
     } else {
       setInsertHabit(null);
     }
@@ -41,10 +41,16 @@ export default function MyHabits() {
         </TitleContainer>
 
         <HabitsContainer>
-          {insertHabit}
+          {insertHabit && (
+            <HabitForm
+              setInsertHabit={setInsertHabit}
+              newHabit={newHabit}
+              setNewHabit={setNewHabit}
+            />
+          )}
           {habitList.length > 0 ? (
             habitList.map((habit, index) => (
-              <Habit created={true} habitData={habit} key={index} />
+              <Habit habitData={habit} key={index} />
             ))
           ) : (
             <p>

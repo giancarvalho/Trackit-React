@@ -10,17 +10,8 @@ import {
 } from "./shared/stylesApp";
 import { TrashOutline } from "react-ionicons";
 
-function Day({
-  dayNumber,
-  dayName,
-  newHabit,
-  setNewHabit,
-  isSelected,
-  created,
-}) {
-  const [selected, setSelected] = useState(false);
-
-  console.log(dayNumber, dayName);
+function Day({ dayNumber, dayName, newHabit, setNewHabit, isSelected }) {
+  const [selected, setSelected] = useState(isSelected);
 
   function addDay(day, event) {
     event.preventDefault();
@@ -34,26 +25,21 @@ function Day({
     }
   }
 
-  if (created) {
-    return <DayContainer selected={isSelected}> {dayName} </DayContainer>;
-  }
   return (
     <DayContainer
       onClick={(event) => addDay(dayNumber, event)}
       selected={selected}
     >
-      {" "}
-      {dayName}{" "}
+      {dayName}
     </DayContainer>
   );
 }
 
-export default function Habit({ setInsertHabit, habitData, created }) {
-  const [newHabit, setNewHabit] = useState({ name: "", days: [] });
+function HabitForm({ setInsertHabit, newHabit, setNewHabit }) {
   const [disabled, setDisabled] = useState(false);
   const { user } = useContext(UserContext);
   const week = { Seg: 1, Ter: 2, Quar: 3, Quin: 4, Sex: 5, Sab: 6, Dom: 0 };
-
+  console.log(newHabit);
   function createHabit(event) {
     event.preventDefault();
     if (newHabit.name.length > 0 && newHabit.days.length > 0) {
@@ -65,47 +51,8 @@ export default function Habit({ setInsertHabit, habitData, created }) {
           setDisabled(false);
         });
     } else {
-      alert("escreva o nome do habito e selecione o dia para continuar");
+      alert("Atribua pelo menos um dia ao seu habito");
     }
-  }
-
-  function deleteHabit(id) {
-    let confirmation = window.confirm("Quer mesmo deletar esse habito?");
-
-    if (confirmation) {
-      deleteHabitRequest(id, user.token);
-      return;
-    }
-
-    return;
-  }
-
-  if (created) {
-    return (
-      <HabitContainer>
-        <div className="top-container">
-          <h1>{habitData.name} </h1>
-
-          <TrashOutline
-            color={"#666666"}
-            height="20px"
-            width="20px"
-            onClick={() => deleteHabit(habitData.id)}
-          />
-        </div>
-        <DaysContainer>
-          {Object.keys(week).map((dayName, index) => (
-            <Day
-              dayNumber={week[dayName]}
-              dayName={dayName[0]}
-              key={index}
-              isSelected={habitData.days.some((item) => item === week[dayName])}
-              created={created}
-            />
-          ))}
-        </DaysContainer>
-      </HabitContainer>
-    );
   }
 
   return (
@@ -116,6 +63,7 @@ export default function Habit({ setInsertHabit, habitData, created }) {
             placeholder="nome do hábito"
             value={newHabit.name}
             onChange={(e) => setNewHabit({ ...newHabit, name: e.target.value })}
+            required
           />
           <DaysContainer>
             {Object.keys(week).map((dayName, index) => (
@@ -125,6 +73,9 @@ export default function Habit({ setInsertHabit, habitData, created }) {
                 key={index}
                 newHabit={newHabit}
                 setNewHabit={setNewHabit}
+                isSelected={newHabit.days.some(
+                  (item) => item === week[dayName]
+                )}
               />
             ))}
           </DaysContainer>
@@ -151,6 +102,49 @@ export default function Habit({ setInsertHabit, habitData, created }) {
     </HabitContainer>
   );
 }
+
+function Habit({ habitData }) {
+  const { user } = useContext(UserContext);
+  const week = { Seg: 1, Ter: 2, Quar: 3, Quin: 4, Sex: 5, Sab: 6, Dom: 0 };
+
+  function deleteHabit(id) {
+    let confirmation = window.confirm("Quer mesmo deletar esse habito?");
+
+    if (confirmation) {
+      deleteHabitRequest(id, user.token);
+      return;
+    }
+
+    return;
+  }
+
+  return (
+    <HabitContainer>
+      <div className="top-container">
+        <h1>{habitData.name} </h1>
+
+        <TrashOutline
+          color={"#666666"}
+          height="20px"
+          width="20px"
+          onClick={() => deleteHabit(habitData.id)}
+        />
+      </div>
+      <DaysContainer>
+        {Object.keys(week).map((dayName, index) => (
+          <DayContainer
+            selected={habitData.days.some((item) => item === week[dayName])}
+          >
+            {" "}
+            {dayName[0]}{" "}
+          </DayContainer>
+        ))}
+      </DaysContainer>
+    </HabitContainer>
+  );
+}
+
+export { Habit, HabitForm };
 
 const DaysContainer = styled.div`
   width: 100%;
