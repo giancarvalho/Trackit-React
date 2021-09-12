@@ -36,6 +36,8 @@ function getTodayHabitList(token) {
     },
   };
 
+  console.log(`${URL}/habits/today`, config);
+
   return axios.get(`${URL}/habits/today`, config);
 }
 

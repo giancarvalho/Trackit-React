@@ -57,6 +57,8 @@ export default function Today() {
   const [todayProgress, setTodayProgress] = useState(0);
   const [update, setUpdate] = useState(0);
 
+  console.log(todayList);
+
   useEffect(() => {
     getTodayHabitList(user.token).then((response) => {
       let list = response.data;

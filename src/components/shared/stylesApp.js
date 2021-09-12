@@ -31,7 +31,7 @@ const HabitContainer = styled.div`
   margin-bottom: 15px;
   color: #666666;
 
-  div {
+  .top-container {
     width: 100%;
     display: flex;
     justify-content: space-between;

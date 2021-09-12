@@ -10,9 +10,17 @@ import {
 } from "./shared/stylesApp";
 import { TrashOutline } from "react-ionicons";
 
-function Day({ index, newHabit, setNewHabit, isSelected, created }) {
+function Day({
+  dayNumber,
+  dayName,
+  newHabit,
+  setNewHabit,
+  isSelected,
+  created,
+}) {
   const [selected, setSelected] = useState(false);
-  const week = ["S", "T", "Q", "Q", "S", "S", "D"];
+
+  console.log(dayNumber, dayName);
 
   function addDay(day, event) {
     event.preventDefault();
@@ -27,15 +35,15 @@ function Day({ index, newHabit, setNewHabit, isSelected, created }) {
   }
 
   if (created) {
-    return <DayContainer selected={isSelected}> {week[index]} </DayContainer>;
+    return <DayContainer selected={isSelected}> {dayName} </DayContainer>;
   }
   return (
     <DayContainer
-      onClick={(event) => addDay(index + 1, event)}
+      onClick={(event) => addDay(dayNumber, event)}
       selected={selected}
     >
       {" "}
-      {week[index]}{" "}
+      {dayName}{" "}
     </DayContainer>
   );
 }
@@ -44,7 +52,9 @@ export default function Habit({ setInsertHabit, habitData, created }) {
   const [newHabit, setNewHabit] = useState({ name: "", days: [] });
   const [disabled, setDisabled] = useState(false);
   const { user } = useContext(UserContext);
+  const week = { Seg: 1, Ter: 2, Quar: 3, Quin: 4, Sex: 5, Sab: 6, Dom: 0 };
 
+  console.log(habitData);
   function createHabit(event) {
     event.preventDefault();
     if (newHabit.name.length > 0 && newHabit.days.length > 0) {
@@ -74,7 +84,7 @@ export default function Habit({ setInsertHabit, habitData, created }) {
   if (created) {
     return (
       <HabitContainer>
-        <div>
+        <div className="top-container">
           <h1>{habitData.name} </h1>
 
           <TrashOutline
@@ -84,14 +94,14 @@ export default function Habit({ setInsertHabit, habitData, created }) {
             onClick={() => deleteHabit(habitData.id)}
           />
         </div>
-
         <DaysContainer>
-          {Array.from({ length: 7 }, (v, index) => (
+          {Object.keys(week).map((dayName, index) => (
             <Day
-              index={index}
+              dayNumber={week[dayName]}
+              dayName={dayName[0]}
               key={index}
+              isSelected={habitData.days.some((item) => item === week[dayName])}
               created={created}
-              isSelected={habitData.days.some((item) => item === index + 1)}
             />
           ))}
         </DaysContainer>
@@ -109,12 +119,13 @@ export default function Habit({ setInsertHabit, habitData, created }) {
             onChange={(e) => setNewHabit({ ...newHabit, name: e.target.value })}
           />
           <DaysContainer>
-            {Array.from({ length: 7 }, (v, index) => (
+            {Object.keys(week).map((dayName, index) => (
               <Day
-                index={index}
+                dayNumber={week[dayName]}
+                dayName={dayName[0]}
                 key={index}
-                setNewHabit={setNewHabit}
                 newHabit={newHabit}
+                setNewHabit={setNewHabit}
               />
             ))}
           </DaysContainer>
