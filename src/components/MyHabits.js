@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import Loader from "react-loader-spinner";
+import { useHistory } from "react-router";
 import styled from "styled-components";
 import UpdateContext from "../contexts/UpdateContext";
 import UserContext from "../contexts/UserContext";
@@ -18,6 +19,8 @@ export default function MyHabits() {
 
   const { user } = useContext(UserContext);
 
+  const history = useHistory();
+
   function addHabit() {
     if (!insertHabit) {
       setInsertHabit(true);
@@ -27,12 +30,19 @@ export default function MyHabits() {
   }
 
   useEffect(() => {
-    getHabitList(user.token).then((response) => {
-      let list = response.data;
-      list = list.sort().reverse();
-      setHabitList(list);
-    });
+    if (user) {
+      getHabitList(user.token).then((response) => {
+        let list = response.data;
+        list = list.sort().reverse();
+        setHabitList(list);
+      });
+    }
   }, [update]);
+
+  if (!user) {
+    history.push("/");
+    return "Redirecionando...";
+  }
 
   function ListOrMessage() {
     return habitList.length > 0 ? (

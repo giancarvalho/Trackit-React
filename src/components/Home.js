@@ -23,7 +23,7 @@ export default function Home() {
     localStorage.setItem("storedUser", JSON.stringify(userData));
   }
 
-  if (!!user) {
+  if (user) {
     history.push("/hoje");
   }
 
@@ -42,7 +42,7 @@ export default function Home() {
         history.push("/hoje");
       })
       .catch((error) => {
-        alert("Ocorreu um erro, tente novamente");
+        alert("Confira novamente suas credenciais");
         setDisabled(false);
       });
   }

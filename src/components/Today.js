@@ -13,6 +13,7 @@ import TopBar from "./TopBar";
 import { checkHabitRequest } from "../trackitRequests";
 import ProgressContext from "../contexts/ProgressContext";
 import UpdateContext from "../contexts/UpdateContext";
+import { useHistory } from "react-router";
 
 function TodayHabit({ habit, user }) {
   const [checked, setChecked] = useState(habit.done);
@@ -112,6 +113,12 @@ export default function Today({ todayList }) {
   let { user } = useContext(UserContext);
   const { todayProgress } = useContext(ProgressContext);
   const progress = (todayProgress.tasksDone / todayProgress.tasks) * 100;
+  const history = useHistory();
+
+  if (!user) {
+    history.push("/");
+    return "Redirecionando...";
+  }
 
   function getFormatedDate() {
     let now = new Date();
@@ -127,7 +134,7 @@ export default function Today({ todayList }) {
       <Main>
         <TitleContainer>
           <Title>{getFormatedDate()}</Title>
-          {progress === 0 ? (
+          {progress === 0 || isNaN(progress) ? (
             <p>Nenhum habito concluído ainda</p>
           ) : (
             <p className="done">{progress.toFixed()}% dos habitos concluídos</p>
