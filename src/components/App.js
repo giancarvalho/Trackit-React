@@ -3,7 +3,7 @@ import "../global.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Home from "./Home";
 import SignUp from "./SignUp";
-import MyHabits from "./MyHabits";
+import Habits from "./Habits";
 import Today from "./Today";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -36,7 +36,7 @@ function App() {
         let list = response.data;
         list = list.sort().reverse();
         setTodayList(list);
-        //only updates if the change comes from page habitos
+        //only updates progress if the change comes from page habitos
         if (list.length !== todayProgress.tasks) {
           updateProgress(list);
         }
@@ -70,7 +70,7 @@ function App() {
                   <Today todayList={todayList} />
                 </Route>
                 <Route path="/habitos" exact>
-                  <MyHabits />
+                  <Habits />
                 </Route>
                 <Route path="/historico" exact>
                   <History />

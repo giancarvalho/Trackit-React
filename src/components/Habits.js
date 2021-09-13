@@ -10,7 +10,7 @@ import { Habit, HabitForm } from "./Habit";
 import { Button, HabitsContainer, Title, Main } from "./shared/stylesApp";
 import TopBar from "./TopBar";
 
-export default function MyHabits() {
+export default function Habits() {
   const [insertHabit, setInsertHabit] = useState(false);
   const [habitList, setHabitList] = useState(null);
   const [newHabit, setNewHabit] = useState({ name: "", days: [] });
