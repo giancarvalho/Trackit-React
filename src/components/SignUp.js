@@ -27,7 +27,7 @@ export default function SignUp() {
     registerRequest(form)
       .then(() => history.push("/"))
       .catch((error) => {
-        alert("Ops, ocorreu um erro. Tente novamente.");
+        alert("Ops, ocorreu um erro no seu cadastro. Tente novamente.");
         setDisabled(false);
       });
   }

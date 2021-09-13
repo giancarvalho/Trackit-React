@@ -35,7 +35,7 @@ function Day({ dayNumber, dayName, newHabit, setNewHabit, isSelected }) {
     </DayContainer>
   );
 }
-
+//generates form for creating a new habit
 function HabitForm({ setInsertHabit, newHabit, setNewHabit }) {
   const [disabled, setDisabled] = useState(false);
   const { user } = useContext(UserContext);
@@ -46,19 +46,23 @@ function HabitForm({ setInsertHabit, newHabit, setNewHabit }) {
     event.preventDefault();
     if (newHabit.name.length > 0 && newHabit.days.length > 0) {
       setDisabled(true);
-      createHabitRequest(newHabit, user.token)
-        .then((response) => {
-          setInsertHabit(null);
-          setNewHabit({ name: "", days: [] });
-          setUpdate(update + 1);
-        })
-        .catch((error) => {
-          alert("ocorreu um erro. Tente novamente.");
-          setDisabled(false);
-        });
+      create();
     } else {
       alert("Atribua pelo menos um dia ao seu habito");
     }
+  }
+
+  function create() {
+    createHabitRequest(newHabit, user.token)
+      .then((response) => {
+        setInsertHabit(null);
+        setNewHabit({ name: "", days: [] });
+        setUpdate(update + 1);
+      })
+      .catch((error) => {
+        alert("ocorreu um erro. Tente novamente.");
+        setDisabled(false);
+      });
   }
 
   return (
@@ -109,18 +113,25 @@ function HabitForm({ setInsertHabit, newHabit, setNewHabit }) {
   );
 }
 
+//generates a habit card with a delete button
 function Habit({ habitData }) {
   const { user } = useContext(UserContext);
   const { setUpdate, update } = useContext(UpdateContext);
   const week = { Seg: 1, Ter: 2, Quar: 3, Quin: 4, Sex: 5, Sab: 6, Dom: 0 };
 
   function deleteHabit(id) {
-    let confirmation = window.confirm("Quer mesmo deletar esse habito?");
+    let confirmation = window.confirm(
+      "Quer mesmo deletar esse habito? Essa ação não pode ser desfeita."
+    );
 
     if (confirmation) {
       deleteHabitRequest(id, user.token)
         .then(() => setUpdate(update + 1))
-        .catch(() => alert("Ocorreu um erro. Tente novamente."));
+        .catch(() =>
+          alert(
+            "Ocorreu um erro. Seu hábito não foi excluído. Tente novamente."
+          )
+        );
       return;
     }
 

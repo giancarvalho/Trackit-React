@@ -15,16 +15,18 @@ import ProgressContext from "../contexts/ProgressContext";
 import UpdateContext from "../contexts/UpdateContext";
 import { useHistory } from "react-router";
 
+//generates a today habit card
 function TodayHabit({ habit, user }) {
   const [checked, setChecked] = useState(habit.done);
   const { update, setUpdate } = useContext(UpdateContext);
-  const [habitClone, setHabitClone] = useState({ ...habit });
   const { todayProgress, setTodayProgress } = useContext(ProgressContext);
+  //controls habit values locally to decrease animation delay
+  const [habitClone, setHabitClone] = useState({ ...habit });
 
   function checkHabit(id) {
     if (!habit.done) {
       setChecked(true);
-      updateClone("+");
+      updateValues("+");
       checkHabitRequest(id, "check", user.token)
         .then(() => setUpdate(update + 1))
         .catch(() => {
@@ -33,7 +35,7 @@ function TodayHabit({ habit, user }) {
       return;
     }
 
-    updateClone("-");
+    updateValues("-");
     setChecked(false);
     checkHabitRequest(id, "uncheck", user.token)
       .then(() => setUpdate(update + 1))
@@ -42,24 +44,27 @@ function TodayHabit({ habit, user }) {
       });
   }
 
-  function updateClone(operation) {
-    let newValue = habitClone.currentSequence;
+  //updates Clone and Progress values
+  function updateValues(operation) {
+    const isEqualSequence =
+      habitClone.currentSequence === habitClone.highestSequence;
+    let newSequenceValue = habitClone.currentSequence;
+    let newProgressValue = todayProgress.tasksDone;
 
     if (operation === "+") {
-      setTodayProgress({
-        ...todayProgress,
-        tasksDone: todayProgress.tasksDone + 1,
-      });
-      newValue++;
+      newSequenceValue++;
+      newProgressValue++;
     } else {
-      setTodayProgress({
-        ...todayProgress,
-        tasksDone: todayProgress.tasksDone - 1,
-      });
-      newValue--;
+      newSequenceValue--;
+      newProgressValue--;
     }
 
-    if (habitClone.currentSequence === habitClone.highestSequence) {
+    updateClone(newSequenceValue, isEqualSequence);
+    updateProgress(newProgressValue);
+  }
+
+  function updateClone(newValue, equal) {
+    if (equal) {
       setHabitClone({
         ...habitClone,
         currentSequence: newValue,
@@ -73,6 +78,14 @@ function TodayHabit({ habit, user }) {
         done: !habitClone.done,
       });
     }
+  }
+
+  //updates progress directly to decrease animation delay
+  function updateProgress(newValue) {
+    setTodayProgress({
+      ...todayProgress,
+      tasksDone: newValue,
+    });
   }
 
   return (

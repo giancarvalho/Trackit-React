@@ -14,13 +14,11 @@ export default function MyHabits() {
   const [insertHabit, setInsertHabit] = useState(false);
   const [habitList, setHabitList] = useState(null);
   const [newHabit, setNewHabit] = useState({ name: "", days: [] });
-
   const { update } = useContext(UpdateContext);
-
   const { user } = useContext(UserContext);
-
   const history = useHistory();
 
+  //opens and closes create habit form
   function addHabit() {
     if (!insertHabit) {
       setInsertHabit(true);
@@ -44,6 +42,7 @@ export default function MyHabits() {
     return "Redirecionando...";
   }
 
+  //returns a list of habit cards or a message if list is empty
   function ListOrMessage() {
     return habitList.length > 0 ? (
       habitList.map((habit, index) => <Habit habitData={habit} key={index} />)

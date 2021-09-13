@@ -6,11 +6,11 @@ import SignUp from "./SignUp";
 import MyHabits from "./MyHabits";
 import Today from "./Today";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import UserContext from "../contexts/UserContext";
 import { useState, useEffect } from "react";
 import ProgressContext from "../contexts/ProgressContext";
 import { getTodayHabitList } from "../trackitRequests";
 import UpdateContext from "../contexts/UpdateContext";
+import UserContext from "../contexts/UserContext";
 import History from "./History";
 
 function App() {
