@@ -143,6 +143,7 @@ function Habit({ habitData }) {
         {Object.keys(week).map((dayName, index) => (
           <DayContainer
             selected={habitData.days.some((item) => item === week[dayName])}
+            key={index}
           >
             {" "}
             {dayName[0]}{" "}

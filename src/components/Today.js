@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import UserContext from "../contexts/UserContext";
 import BottomBar from "./BottomBar";
@@ -22,16 +22,49 @@ function TodayHabit({ habit, user }) {
   function checkHabit(id) {
     if (!habit.done) {
       setChecked(true);
+      updateClone("+");
       checkHabitRequest(id, "check", user.token)
         .then(() => setUpdate(update + 1))
-        .catch(() => alert("Ocorreu um problema. Tente Novamente"));
+        .catch(() => {
+          alert("Ocorreu um problema. Tente Novamente");
+          updateClone("-");
+        });
       return;
     }
 
+    updateClone("-");
     setChecked(false);
     checkHabitRequest(id, "uncheck", user.token)
       .then(() => setUpdate(update + 1))
-      .catch(() => alert("Ocorreu um problema. Tente Novamente"));
+      .catch(() => {
+        alert("Ocorreu um problema. Tente Novamente");
+        updateClone("+");
+      });
+  }
+
+  function updateClone(operation) {
+    let newValue = habitClone.currentSequence;
+
+    if (operation === "+") {
+      newValue++;
+    } else {
+      newValue--;
+    }
+
+    if (habitClone.currentSequence === habitClone.highestSequence) {
+      setHabitClone({
+        ...habitClone,
+        currentSequence: newValue,
+        highestSequence: newValue,
+        done: !habitClone.done,
+      });
+    } else {
+      setHabitClone({
+        ...habitClone,
+        currentSequence: newValue,
+        done: !habitClone.done,
+      });
+    }
   }
 
   return (
@@ -40,7 +73,7 @@ function TodayHabit({ habit, user }) {
         <h1>{habitClone.name}</h1>
         <p>
           Sequencia atual:{" "}
-          <span className={habitClone.done && "done"}>
+          <span className={habitClone.done ? "done" : ""}>
             {habitClone.currentSequence} dias
           </span>
         </p>

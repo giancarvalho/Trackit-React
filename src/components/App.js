@@ -17,8 +17,6 @@ function App() {
   const [todayProgress, setTodayProgress] = useState(0);
   const [todayList, setTodayList] = useState([]);
   const [update, setUpdate] = useState(0);
-  console.log(update);
-  console.log(todayProgress);
 
   function getStoredUser() {
     let storedUser = localStorage.getItem("storedUser");
