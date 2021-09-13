@@ -82,8 +82,9 @@ function TodayHabit({ habit, user }) {
           <span
             className={
               habitClone.highestSequence === habitClone.currentSequence &&
-              habitClone.highestSequence > 0 &&
-              "done"
+              habitClone.highestSequence > 0
+                ? "done"
+                : ""
             }
           >
             {habitClone.highestSequence} dias
@@ -103,7 +104,7 @@ function TodayHabit({ habit, user }) {
 export default function Today({ todayList, setTodayList }) {
   let { user } = useContext(UserContext);
   const { todayProgress } = useContext(ProgressContext);
-
+  console.log(typeof todayProgress);
   function getFormatedDate() {
     let now = new Date();
     let options = { weekday: "long", month: "numeric", day: "numeric" };
@@ -118,7 +119,7 @@ export default function Today({ todayList, setTodayList }) {
       <Main>
         <TitleContainer>
           <Title>{getFormatedDate()}</Title>
-          {todayProgress === 0 ? (
+          {todayProgress === "0" ? (
             <p>Nenhum habito concluído ainda</p>
           ) : (
             <p className="done">{todayProgress}% dos habitos concluídos</p>

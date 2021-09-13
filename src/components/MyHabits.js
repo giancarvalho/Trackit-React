@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
-import ProgressContext from "../contexts/ProgressContext";
+import UpdateContext from "../contexts/UpdateContext";
 import UserContext from "../contexts/UserContext";
 import { getHabitList } from "../trackitRequests";
 import BottomBar from "./BottomBar";
@@ -13,7 +13,7 @@ export default function MyHabits() {
   const [habitList, setHabitList] = useState(0);
   const [newHabit, setNewHabit] = useState({ name: "", days: [] });
 
-  const { todayProgress } = useContext(ProgressContext);
+  const { update } = useContext(UpdateContext);
 
   const { user } = useContext(UserContext);
 
@@ -31,7 +31,7 @@ export default function MyHabits() {
       list = list.sort().reverse();
       setHabitList(list);
     });
-  }, [todayProgress]);
+  }, [update]);
 
   return (
     <>

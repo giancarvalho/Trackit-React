@@ -14,7 +14,7 @@ import UpdateContext from "../contexts/UpdateContext";
 
 function App() {
   const [user, setUser] = useState(getStoredUser());
-  const [todayProgress, setTodayProgress] = useState(0);
+  const [todayProgress, setTodayProgress] = useState("0");
   const [todayList, setTodayList] = useState([]);
   const [update, setUpdate] = useState(0);
 
@@ -26,12 +26,14 @@ function App() {
   }
 
   useEffect(() => {
-    getTodayHabitList(user.token).then((response) => {
-      let list = response.data;
-      list = list.sort().reverse();
-      setTodayList(list);
-      calculateProgress(list);
-    });
+    if (user) {
+      getTodayHabitList(user.token).then((response) => {
+        let list = response.data;
+        list = list.sort().reverse();
+        setTodayList(list);
+        calculateProgress(list);
+      });
+    }
   }, [update]);
 
   function calculateProgress(habitList) {
@@ -42,7 +44,7 @@ function App() {
       donePercentage = 0;
     }
 
-    setTodayProgress(donePercentage);
+    setTodayProgress(donePercentage.toFixed());
   }
 
   return (
