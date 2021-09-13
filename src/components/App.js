@@ -20,6 +20,7 @@ function App() {
     tasksDone: 0,
   });
   const [todayList, setTodayList] = useState([]);
+  //controls if habitList needs to be updated
   const [update, setUpdate] = useState(0);
 
   function getStoredUser() {
@@ -35,6 +36,7 @@ function App() {
         let list = response.data;
         list = list.sort().reverse();
         setTodayList(list);
+        //only updates if the change comes from page habitos
         if (list.length !== todayProgress.tasks) {
           updateProgress(list);
         }
