@@ -12,56 +12,48 @@ import {
 import TopBar from "./TopBar";
 import { checkHabitRequest } from "../trackitRequests";
 import ProgressContext from "../contexts/ProgressContext";
+import UpdateContext from "../contexts/UpdateContext";
 
 function TodayHabit({ habit, user }) {
   const [checked, setChecked] = useState(habit.done);
-  const { todayProgress, setTodayProgress } = useContext(ProgressContext);
+  const { update, setUpdate } = useContext(UpdateContext);
+  const [habitClone, setHabitClone] = useState({ ...habit });
 
   function checkHabit(id) {
     if (!habit.done) {
       setChecked(true);
       checkHabitRequest(id, "check", user.token)
-        .then(() =>
-          setTodayProgress({
-            ...todayProgress.progress,
-            update: todayProgress.update + 1,
-          })
-        )
+        .then(() => setUpdate(update + 1))
         .catch(() => alert("Ocorreu um problema. Tente Novamente"));
       return;
     }
 
     setChecked(false);
     checkHabitRequest(id, "uncheck", user.token)
-      .then(() =>
-        setTodayProgress({
-          ...todayProgress.progress,
-          update: todayProgress.update + 1,
-        })
-      )
+      .then(() => setUpdate(update + 1))
       .catch(() => alert("Ocorreu um problema. Tente Novamente"));
   }
 
   return (
     <TodayHabitContainer>
       <div>
-        <h1>{habit.name}</h1>
+        <h1>{habitClone.name}</h1>
         <p>
           Sequencia atual:{" "}
-          <span className={habit.done && "done"}>
-            {habit.currentSequence} dias
+          <span className={habitClone.done && "done"}>
+            {habitClone.currentSequence} dias
           </span>
         </p>
         <p>
           Seu Recorde:{" "}
           <span
             className={
-              habit.highestSequence === habit.currentSequence &&
-              habit.highestSequence > 0 &&
+              habitClone.highestSequence === habitClone.currentSequence &&
+              habitClone.highestSequence > 0 &&
               "done"
             }
           >
-            {habit.highestSequence} dias
+            {habitClone.highestSequence} dias
           </span>{" "}
         </p>
       </div>
@@ -77,7 +69,7 @@ function TodayHabit({ habit, user }) {
 
 export default function Today({ todayList, setTodayList }) {
   let { user } = useContext(UserContext);
-  const { todayProgress, setTodayProgress } = useContext(ProgressContext);
+  const { todayProgress } = useContext(ProgressContext);
 
   function getFormatedDate() {
     let now = new Date();
@@ -93,7 +85,7 @@ export default function Today({ todayList, setTodayList }) {
       <Main>
         <TitleContainer>
           <Title>{getFormatedDate()}</Title>
-          {todayProgress === "0" || isNaN(todayProgress) ? (
+          {todayProgress === 0 ? (
             <p>Nenhum habito concluído ainda</p>
           ) : (
             <p className="done">{todayProgress}% dos habitos concluídos</p>

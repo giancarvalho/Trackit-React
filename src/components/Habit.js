@@ -9,7 +9,7 @@ import {
   Input,
 } from "./shared/stylesApp";
 import { TrashOutline } from "react-ionicons";
-import ProgressContext from "../contexts/ProgressContext";
+import UpdateContext from "../contexts/UpdateContext";
 
 function Day({ dayNumber, dayName, newHabit, setNewHabit, isSelected }) {
   const [selected, setSelected] = useState(isSelected);
@@ -40,7 +40,7 @@ function HabitForm({ setInsertHabit, newHabit, setNewHabit }) {
   const [disabled, setDisabled] = useState(false);
   const { user } = useContext(UserContext);
   const week = { Seg: 1, Ter: 2, Quar: 3, Quin: 4, Sex: 5, Sab: 6, Dom: 0 };
-  const { setTodayProgress, todayProgress } = useContext(ProgressContext);
+  const { setUpdate, update } = useContext(UpdateContext);
 
   function createHabit(event) {
     event.preventDefault();
@@ -50,10 +50,7 @@ function HabitForm({ setInsertHabit, newHabit, setNewHabit }) {
         .then((response) => {
           setInsertHabit(null);
           setNewHabit({ name: "", days: [] });
-          setTodayProgress({
-            ...todayProgress.progress,
-            update: todayProgress.update + 1,
-          });
+          setUpdate(update + 1);
         })
         .catch((error) => {
           alert("ocorreu um erro. Tente novamente.");
@@ -114,7 +111,7 @@ function HabitForm({ setInsertHabit, newHabit, setNewHabit }) {
 
 function Habit({ habitData }) {
   const { user } = useContext(UserContext);
-  const { setTodayProgress, todayProgress } = useContext(ProgressContext);
+  const { setUpdate, update } = useContext(UpdateContext);
   const week = { Seg: 1, Ter: 2, Quar: 3, Quin: 4, Sex: 5, Sab: 6, Dom: 0 };
 
   function deleteHabit(id) {
@@ -122,12 +119,7 @@ function Habit({ habitData }) {
 
     if (confirmation) {
       deleteHabitRequest(id, user.token)
-        .then(() =>
-          setTodayProgress({
-            ...todayProgress.progress,
-            update: todayProgress.update + 1,
-          })
-        )
+        .then(() => setUpdate(update + 1))
         .catch(() => alert("Ocorreu um erro. Tente novamente."));
       return;
     }

@@ -10,14 +10,15 @@ import UserContext from "../contexts/UserContext";
 import { useState, useEffect } from "react";
 import ProgressContext from "../contexts/ProgressContext";
 import { getTodayHabitList } from "../trackitRequests";
+import UpdateContext from "../contexts/UpdateContext";
 
 function App() {
   const [user, setUser] = useState(getStoredUser());
-  const [todayProgress, setTodayProgress] = useState({
-    progress: 0,
-    update: 0,
-  });
+  const [todayProgress, setTodayProgress] = useState(0);
   const [todayList, setTodayList] = useState([]);
+  const [update, setUpdate] = useState(0);
+  console.log(update);
+  console.log(todayProgress);
 
   function getStoredUser() {
     let storedUser = localStorage.getItem("storedUser");
@@ -33,13 +34,17 @@ function App() {
       setTodayList(list);
       calculateProgress(list);
     });
-  }, [todayProgress]);
+  }, [update]);
 
   function calculateProgress(habitList) {
     let doneTask = habitList.filter((item) => item.done);
     let donePercentage = (doneTask.length / habitList.length) * 100;
 
-    setTodayProgress({ ...todayProgress, progress: donePercentage });
+    if (isNaN(donePercentage)) {
+      donePercentage = 0;
+    }
+
+    setTodayProgress(donePercentage);
   }
 
   return (
@@ -56,12 +61,14 @@ function App() {
             <ProgressContext.Provider
               value={{ todayProgress, setTodayProgress }}
             >
-              <Route path="/hoje" exact>
-                <Today todayList={todayList} setTodayList={setTodayList} />
-              </Route>
-              <Route path="/habitos" exact>
-                <MyHabits />
-              </Route>
+              <UpdateContext.Provider value={{ update, setUpdate }}>
+                <Route path="/hoje" exact>
+                  <Today todayList={todayList} setTodayList={setTodayList} />
+                </Route>
+                <Route path="/habitos" exact>
+                  <MyHabits />
+                </Route>
+              </UpdateContext.Provider>
             </ProgressContext.Provider>
           </Switch>
         </div>
