@@ -14,7 +14,10 @@ import UpdateContext from "../contexts/UpdateContext";
 
 function App() {
   const [user, setUser] = useState(getStoredUser());
-  const [todayProgress, setTodayProgress] = useState("0");
+  const [todayProgress, setTodayProgress] = useState({
+    tasks: 0,
+    tasksDone: 0,
+  });
   const [todayList, setTodayList] = useState([]);
   const [update, setUpdate] = useState(0);
 
@@ -31,20 +34,18 @@ function App() {
         let list = response.data;
         list = list.sort().reverse();
         setTodayList(list);
-        calculateProgress(list);
+        if (list.length !== todayProgress.tasks) {
+          updateProgress(list);
+        }
       });
     }
   }, [update]);
 
-  function calculateProgress(habitList) {
-    let doneTask = habitList.filter((item) => item.done);
-    let donePercentage = (doneTask.length / habitList.length) * 100;
+  function updateProgress(habitList) {
+    let tasks = habitList.length;
+    let tasksDone = habitList.filter((item) => item.done).length;
 
-    if (isNaN(donePercentage)) {
-      donePercentage = 0;
-    }
-
-    setTodayProgress(donePercentage.toFixed());
+    setTodayProgress({ tasks: tasks, tasksDone: tasksDone });
   }
 
   return (
@@ -63,7 +64,7 @@ function App() {
             >
               <UpdateContext.Provider value={{ update, setUpdate }}>
                 <Route path="/hoje" exact>
-                  <Today todayList={todayList} setTodayList={setTodayList} />
+                  <Today todayList={todayList} />
                 </Route>
                 <Route path="/habitos" exact>
                   <MyHabits />

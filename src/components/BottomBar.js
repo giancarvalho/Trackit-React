@@ -7,8 +7,9 @@ import ProgressContext from "../contexts/ProgressContext";
 
 export default function BottomBar() {
   const { todayProgress } = useContext(ProgressContext);
+  const progress = (todayProgress.tasksDone / todayProgress.tasks) * 100;
 
-  const percentage = Number(todayProgress);
+  const percentage = Number(progress);
 
   return (
     <BottomBarContainer>

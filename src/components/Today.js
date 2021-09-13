@@ -18,6 +18,7 @@ function TodayHabit({ habit, user }) {
   const [checked, setChecked] = useState(habit.done);
   const { update, setUpdate } = useContext(UpdateContext);
   const [habitClone, setHabitClone] = useState({ ...habit });
+  const { todayProgress, setTodayProgress } = useContext(ProgressContext);
 
   function checkHabit(id) {
     if (!habit.done) {
@@ -27,7 +28,6 @@ function TodayHabit({ habit, user }) {
         .then(() => setUpdate(update + 1))
         .catch(() => {
           alert("Ocorreu um problema. Tente Novamente");
-          updateClone("-");
         });
       return;
     }
@@ -38,7 +38,6 @@ function TodayHabit({ habit, user }) {
       .then(() => setUpdate(update + 1))
       .catch(() => {
         alert("Ocorreu um problema. Tente Novamente");
-        updateClone("+");
       });
   }
 
@@ -46,8 +45,16 @@ function TodayHabit({ habit, user }) {
     let newValue = habitClone.currentSequence;
 
     if (operation === "+") {
+      setTodayProgress({
+        ...todayProgress,
+        tasksDone: todayProgress.tasksDone + 1,
+      });
       newValue++;
     } else {
+      setTodayProgress({
+        ...todayProgress,
+        tasksDone: todayProgress.tasksDone - 1,
+      });
       newValue--;
     }
 
@@ -101,10 +108,11 @@ function TodayHabit({ habit, user }) {
   );
 }
 
-export default function Today({ todayList, setTodayList }) {
+export default function Today({ todayList }) {
   let { user } = useContext(UserContext);
   const { todayProgress } = useContext(ProgressContext);
-  console.log(typeof todayProgress);
+  const progress = (todayProgress.tasksDone / todayProgress.tasks) * 100;
+
   function getFormatedDate() {
     let now = new Date();
     let options = { weekday: "long", month: "numeric", day: "numeric" };
@@ -119,10 +127,10 @@ export default function Today({ todayList, setTodayList }) {
       <Main>
         <TitleContainer>
           <Title>{getFormatedDate()}</Title>
-          {todayProgress === "0" ? (
+          {progress === 0 ? (
             <p>Nenhum habito concluído ainda</p>
           ) : (
-            <p className="done">{todayProgress}% dos habitos concluídos</p>
+            <p className="done">{progress.toFixed()}% dos habitos concluídos</p>
           )}
         </TitleContainer>
         <HabitsContainer>
