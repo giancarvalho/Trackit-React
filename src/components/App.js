@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 import ProgressContext from "../contexts/ProgressContext";
 import { getTodayHabitList } from "../trackitRequests";
 import UpdateContext from "../contexts/UpdateContext";
+import History from "./History";
 
 function App() {
   const [user, setUser] = useState(getStoredUser());
@@ -68,6 +69,9 @@ function App() {
                 </Route>
                 <Route path="/habitos" exact>
                   <MyHabits />
+                </Route>
+                <Route path="/historico" exact>
+                  <History />
                 </Route>
               </UpdateContext.Provider>
             </ProgressContext.Provider>

@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect } from "react";
+import Loader from "react-loader-spinner";
 import styled from "styled-components";
 import UpdateContext from "../contexts/UpdateContext";
 import UserContext from "../contexts/UserContext";
@@ -10,7 +11,7 @@ import TopBar from "./TopBar";
 
 export default function MyHabits() {
   const [insertHabit, setInsertHabit] = useState(false);
-  const [habitList, setHabitList] = useState(0);
+  const [habitList, setHabitList] = useState(null);
   const [newHabit, setNewHabit] = useState({ name: "", days: [] });
 
   const { update } = useContext(UpdateContext);
@@ -33,6 +34,17 @@ export default function MyHabits() {
     });
   }, [update]);
 
+  function ListOrMessage() {
+    return habitList.length > 0 ? (
+      habitList.map((habit, index) => <Habit habitData={habit} key={index} />)
+    ) : (
+      <p>
+        Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para
+        começar a trackear!
+      </p>
+    );
+  }
+
   return (
     <>
       <TopBar />
@@ -52,15 +64,13 @@ export default function MyHabits() {
               setNewHabit={setNewHabit}
             />
           )}
-          {habitList.length > 0 ? (
-            habitList.map((habit, index) => (
-              <Habit habitData={habit} key={index} />
-            ))
+
+          {habitList ? (
+            <ListOrMessage />
           ) : (
-            <p>
-              Você não tem nenhum hábito cadastrado ainda. Adicione um hábito
-              para começar a trackear!
-            </p>
+            <LoaderContainer>
+              <Loader type="ThreeDots" color="#52B6FF" height={75} width={75} />
+            </LoaderContainer>
           )}
         </HabitsContainer>
       </Main>
@@ -75,4 +85,10 @@ const TitleContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+`;
+
+const LoaderContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
 `;
