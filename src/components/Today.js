@@ -48,13 +48,22 @@ function TodayHabit({ habit, user }) {
         <h1>{habit.name}</h1>
         <p>
           Sequencia atual:{" "}
-          {checked ? (
-            <span className="done">{habit.currentSequence} dias</span>
-          ) : (
-            <span>{habit.currentSequence} dias</span>
-          )}{" "}
+          <span className={habit.done && "done"}>
+            {habit.currentSequence} dias
+          </span>
         </p>
-        <p>Seu Recorde: {habit.highestSequence} dias</p>
+        <p>
+          Seu Recorde:{" "}
+          <span
+            className={
+              habit.highestSequence === habit.currentSequence &&
+              habit.highestSequence > 0 &&
+              "done"
+            }
+          >
+            {habit.highestSequence} dias
+          </span>{" "}
+        </p>
       </div>
       <Checkbox
         color={checked ? "#8FC549" : "#E7E7E7"}
