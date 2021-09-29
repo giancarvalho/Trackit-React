@@ -1,5 +1,5 @@
-TrackIt is a full-fledged tracking habit app made in ReactJS. 
+TrackIt is a tracking habit app made in ReactJS. 
 
-You can view it in the link below:
+You can view it in the link below (mobile only):
 
 https://trackit-react-steel.vercel.app
