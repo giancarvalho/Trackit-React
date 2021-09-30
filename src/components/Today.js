@@ -14,6 +14,7 @@ import { checkHabitRequest } from "../trackitRequests";
 import ProgressContext from "../contexts/ProgressContext";
 import UpdateContext from "../contexts/UpdateContext";
 import { useHistory } from "react-router";
+import getFormatedDate from "../scripts/getFormatedDate";
 
 //generates a today habit card
 function TodayHabit({ habit, user }) {
@@ -132,14 +133,6 @@ export default function Today({ todayList }) {
     if (!user) {
         history.push("/");
         return "Redirecionando...";
-    }
-
-    function getFormatedDate() {
-        let now = new Date();
-        let options = { weekday: "long", month: "numeric", day: "numeric" };
-        let date = now.toLocaleString("pt-BR", options);
-
-        return date.charAt(0).toUpperCase() + date.slice(1);
     }
 
     return (

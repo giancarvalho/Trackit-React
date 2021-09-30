@@ -11,11 +11,15 @@ import { HabitsCalendarContainer } from "./StylesHistory";
 import { getHistory } from "../trackitRequests";
 import Loader from "react-loader-spinner";
 import dayjs from "dayjs";
+import getFormatedDate from "../scripts/getFormatedDate";
+
 export default function History() {
     const history = useHistory();
     const { user } = useContext(UserContext);
-    const [date, setDate] = useState(new Date());
-    const [habitList, setHabitList] = useState([]);
+    const [value, onChange] = useState(new Date());
+    const [habitList, setHabitList] = useState(null);
+    const [isPopUpOpen, setIsPopUpOpen] = useState(false);
+    const [dayHabits, setDayHabits] = useState({ day: "", habits: [] });
 
     useEffect(() => {
         getHistory(user.token)
@@ -28,10 +32,16 @@ export default function History() {
         return "Redirecionando...";
     }
 
-    function decideClass(date) {
+    function getDay(date) {
         const day = dayjs(date).format("DD/MM/YYYY");
 
         let dayData = habitList.find((date) => date.day === day);
+
+        return dayData;
+    }
+
+    function decideClass(date) {
+        const dayData = getDay(date);
 
         if (!dayData) {
             return "";
@@ -52,6 +62,19 @@ export default function History() {
         return "complete";
     }
 
+    function showHabitsOnClickedDay(date) {
+        const dayData = getDay(date);
+
+        if (!dayData) {
+            return;
+        }
+
+        const day = getFormatedDate(date);
+        setIsPopUpOpen(true);
+
+        setDayHabits({ day, habits: dayData.habits });
+    }
+
     return (
         <>
             <TopBar />
@@ -61,7 +84,21 @@ export default function History() {
                 </TitleContainer>
 
                 <HabitsCalendarContainer>
-                    {habitList.length === 0 ? (
+                    {habitList ? (
+                        <Calendar
+                            value={value}
+                            onChange={onChange}
+                            locale="pt-br"
+                            formatDay={(locale, date) => (
+                                <CustomDay className={decideClass(date)}>
+                                    {date.getDate()}
+                                </CustomDay>
+                            )}
+                            onClickDay={(value, event) =>
+                                showHabitsOnClickedDay(value)
+                            }
+                        />
+                    ) : (
                         <LoaderContainer>
                             <Loader
                                 type="ThreeDots"
@@ -70,17 +107,16 @@ export default function History() {
                                 width={75}
                             />
                         </LoaderContainer>
-                    ) : (
-                        <Calendar
-                            value={date}
-                            onChange={setDate}
-                            locale="pt-br"
-                            formatDay={(locale, date) => (
-                                <CustomDay className={decideClass(date)}>
-                                    {date.getDate()}
-                                </CustomDay>
-                            )}
-                        />
+                    )}
+                    {isPopUpOpen && (
+                        <PopUpContainer isPopUpOpen={isPopUpOpen}>
+                            <h1>{dayHabits.day}</h1>
+                            <ul>
+                                {dayHabits.habits.map((day, index) => (
+                                    <li key={index}>{day.name}</li>
+                                ))}
+                            </ul>
+                        </PopUpContainer>
                     )}
                 </HabitsCalendarContainer>
             </Main>
@@ -109,10 +145,12 @@ const CustomDay = styled.div`
     &.incomplete {
         background-color: #e85665;
     }
-    &:enabled,
-    &:hover {
+
+    &:hover,
+    &:hover.complete,
+    &:hover.incomplete {
         background-color: #1087ff;
-        color: white;
+        color: #fff;
     }
 `;
 
@@ -120,4 +158,28 @@ const LoaderContainer = styled.div`
     display: flex;
     width: 100%;
     justify-content: center;
+`;
+
+const PopUpContainer = styled.div`
+    position: fixed;
+    z-index: 3;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-height: 40vh;
+    width: 80vw;
+    background-color: #fff;
+    box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    color: #666666;
+
+    h1 {
+        font-size: 20px;
+        color: #126ba5;
+        margin-bottom: 15px;
+    }
+
+    li {
+        margin-bottom: 8px;
+    }
 `;

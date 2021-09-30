@@ -118,33 +118,14 @@ const HabitsCalendarContainer = styled.div`
         padding: 0.75em 0.5em;
         background: none;
     }
-    .react-calendar__tile:disabled {
-        background-color: #f0f0f0;
-    }
-    .react-calendar__tile:enabled:hover,
-    .react-calendar__tile:enabled:focus {
-        background-color: #e6e6e6;
-        border-radius: 50%;
-    }
-    .react-calendar__tile--now {
-        background: #ffff76;
-    }
-    .react-calendar__tile--now:enabled:hover,
-    .react-calendar__tile--now:enabled:focus {
-        background: #ffffa9;
-    }
-    .react-calendar__tile--hasActive {
-        background: #76baff;
-        border-radius: 50%;
-    }
-    .react-calendar__tile--hasActive:enabled:hover,
-    .react-calendar__tile--hasActive:enabled:focus {
-        background: #a9d4ff;
-        border-radius: 50%;
-    }
 
     .react-calendar--selectRange .react-calendar__tile--hover {
         background-color: #e6e6e6;
+    }
+
+    .react-calendar__tile--now .complete,
+    .react-calendar__tile--now .incomplete {
+        background-color: #ffff76;
     }
 `;
 
