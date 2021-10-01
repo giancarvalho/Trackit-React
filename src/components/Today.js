@@ -94,13 +94,13 @@ function TodayHabit({ habit, user }) {
             <div>
                 <h1>{habitClone.name}</h1>
                 <p>
-                    Sequencia atual:{" "}
+                    Current streak:{" "}
                     <span className={habitClone.done ? "done" : ""}>
                         {habitClone.currentSequence} dias
                     </span>
                 </p>
                 <p>
-                    Seu Recorde:{" "}
+                    Your record:{" "}
                     <span
                         className={
                             habitClone.highestSequence ===
@@ -142,23 +142,24 @@ export default function Today({ todayList }) {
                 <TitleContainer>
                     <Title>{getFormatedDate()}</Title>
                     {progress === 0 || isNaN(progress) ? (
-                        <p>Nenhum habito concluído ainda</p>
+                        <p>No habits were done yet</p>
                     ) : (
                         <p className="done">
-                            {progress.toFixed()}% dos habitos concluídos
+                            {progress.toFixed()}% habits done
                         </p>
                     )}
                 </TitleContainer>
                 <HabitsContainer>
-                    {todayList.length === 0
-                        ? "Você não tem nenhum hábito cadastrado para hoje."
-                        : todayList.map((habit, index) => (
-                              <TodayHabit
-                                  habit={habit}
-                                  user={user}
-                                  key={index}
-                              />
-                          ))}
+                    {todayList.length === 0 ? (
+                        <p>
+                            No habits added for today. Add a new one on your
+                            Habits page ;)
+                        </p>
+                    ) : (
+                        todayList.map((habit, index) => (
+                            <TodayHabit habit={habit} user={user} key={index} />
+                        ))
+                    )}
                 </HabitsContainer>
             </Main>
             <BottomBar />

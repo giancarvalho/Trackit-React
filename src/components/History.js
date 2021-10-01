@@ -12,7 +12,7 @@ import { getHistory } from "../trackitRequests";
 import Loader from "react-loader-spinner";
 import dayjs from "dayjs";
 import getFormatedDate from "../scripts/getFormatedDate";
-
+import { Button } from "./shared/stylesApp";
 export default function History() {
     const history = useHistory();
     const { user } = useContext(UserContext);
@@ -110,12 +110,33 @@ export default function History() {
                     )}
                     {isPopUpOpen && (
                         <PopUpContainer isPopUpOpen={isPopUpOpen}>
-                            <h1>{dayHabits.day}</h1>
-                            <ul>
-                                {dayHabits.habits.map((day, index) => (
-                                    <li key={index}>{day.name}</li>
-                                ))}
-                            </ul>
+                            <div>
+                                <h1>{dayHabits.day}</h1>
+                                <ul>
+                                    {dayHabits.habits.map((habit, index) => (
+                                        <li
+                                            key={index}
+                                            className={
+                                                habit.done ? "done" : "missed"
+                                            }
+                                        >
+                                            {habit.done ? (
+                                                <span>&#10003;</span>
+                                            ) : (
+                                                <span>&#9932;</span>
+                                            )}{" "}
+                                            {habit.name}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                            <Button
+                                height="20%"
+                                width="70%"
+                                onClick={() => setIsPopUpOpen(false)}
+                            >
+                                Voltar
+                            </Button>
                         </PopUpContainer>
                     )}
                 </HabitsCalendarContainer>
@@ -161,6 +182,10 @@ const LoaderContainer = styled.div`
 `;
 
 const PopUpContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     position: fixed;
     z-index: 3;
     top: 50%;
@@ -181,5 +206,13 @@ const PopUpContainer = styled.div`
 
     li {
         margin-bottom: 8px;
+    }
+
+    .done {
+        color: #8ac353;
+    }
+
+    .missed {
+        color: #e85665;
     }
 `;

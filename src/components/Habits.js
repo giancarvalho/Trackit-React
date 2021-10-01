@@ -50,8 +50,8 @@ export default function Habits() {
             ))
         ) : (
             <p>
-                Você não tem nenhum hábito cadastrado ainda. Adicione um hábito
-                para começar a trackear!
+                You haven't added any habits yet. Add a habit new habit to
+                start!
             </p>
         );
     }
@@ -61,7 +61,7 @@ export default function Habits() {
             <TopBar />
             <Main>
                 <TitleContainer>
-                    <Title>Meus hábitos</Title>
+                    <Title>My habits</Title>
                     <Button
                         width="40px"
                         height="35px"
