@@ -24,7 +24,7 @@ export default function Home() {
 
         if (storedUser) {
             setUser(storedUser);
-            history.push("/hoje");
+            history.push("/today");
         }
     }, []);
 
@@ -51,7 +51,7 @@ export default function Home() {
             .then((response) => {
                 setUser(response.data);
                 storeUser(response.data);
-                history.push("/hoje");
+                history.push("/today");
             })
             .catch((error) => {
                 alert("Confira novamente suas credenciais");
@@ -89,7 +89,7 @@ export default function Home() {
                     </fieldset>
                 </form>
             </LoginContainer>
-            <Link to="/cadastro">
+            <Link to="/signup">
                 <Anchor>Não tem uma conta? Cadastre-se!</Anchor>
             </Link>
         </Main>

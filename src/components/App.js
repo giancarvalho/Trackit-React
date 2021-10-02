@@ -52,7 +52,7 @@ function App() {
                         <Route path="/" exact>
                             <Home />
                         </Route>
-                        <Route path="/cadastro" exact>
+                        <Route path="/signup" exact>
                             <SignUp />
                         </Route>
                         <ProgressContext.Provider
@@ -61,16 +61,16 @@ function App() {
                             <UpdateContext.Provider
                                 value={{ update, setUpdate }}
                             >
-                                <Route path="/hoje" exact>
+                                <Route path="/today" exact>
                                     <Today
                                         todayList={todayList}
                                         setTodayList={setTodayList}
                                     />
                                 </Route>
-                                <Route path="/habitos" exact>
+                                <Route path="/habits" exact>
                                     <Habits />
                                 </Route>
-                                <Route path="/historico" exact>
+                                <Route path="/history" exact>
                                     <History />
                                 </Route>
                             </UpdateContext.Provider>
