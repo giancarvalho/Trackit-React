@@ -62,7 +62,10 @@ function App() {
                                 value={{ update, setUpdate }}
                             >
                                 <Route path="/hoje" exact>
-                                    <Today todayList={todayList} />
+                                    <Today
+                                        todayList={todayList}
+                                        setTodayList={setTodayList}
+                                    />
                                 </Route>
                                 <Route path="/habitos" exact>
                                     <Habits />

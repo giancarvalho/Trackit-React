@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import UserContext from "../contexts/UserContext";
 import BottomBar from "./BottomBar";
@@ -10,7 +10,7 @@ import {
     HabitContainer,
 } from "./shared/stylesApp";
 import TopBar from "./TopBar";
-import { checkHabitRequest } from "../trackitRequests";
+import { checkHabitRequest, getTodayHabitList } from "../trackitRequests";
 import ProgressContext from "../contexts/ProgressContext";
 import UpdateContext from "../contexts/UpdateContext";
 import { useHistory } from "react-router";
@@ -124,11 +124,21 @@ function TodayHabit({ habit, user }) {
     );
 }
 
-export default function Today({ todayList }) {
+export default function Today({ todayList, setTodayList }) {
     let { user } = useContext(UserContext);
     const { todayProgress } = useContext(ProgressContext);
     const progress = (todayProgress.tasksDone / todayProgress.tasks) * 100;
     const history = useHistory();
+
+    useEffect(() => {
+        if (user) {
+            getTodayHabitList(user.token).then((response) => {
+                let list = response.data;
+                list = list.sort().reverse();
+                setTodayList(list);
+            });
+        }
+    }, []);
 
     if (!user) {
         history.push("/");
