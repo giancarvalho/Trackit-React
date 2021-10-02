@@ -96,7 +96,7 @@ function TodayHabit({ habit, user }) {
                 <p>
                     Current streak:{" "}
                     <span className={habitClone.done ? "done" : ""}>
-                        {habitClone.currentSequence} dias
+                        {habitClone.currentSequence} days
                     </span>
                 </p>
                 <p>
@@ -110,7 +110,7 @@ function TodayHabit({ habit, user }) {
                                 : ""
                         }
                     >
-                        {habitClone.highestSequence} dias
+                        {habitClone.highestSequence} days
                     </span>{" "}
                 </p>
             </div>
@@ -142,7 +142,7 @@ export default function Today({ todayList, setTodayList }) {
 
     if (!user) {
         history.push("/");
-        return "Redirecionando...";
+        return "Redirecting...";
     }
 
     return (

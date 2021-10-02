@@ -13,6 +13,7 @@ import Loader from "react-loader-spinner";
 import dayjs from "dayjs";
 import getFormatedDate from "../scripts/getFormatedDate";
 import { Button } from "./shared/stylesApp";
+
 export default function History() {
     const history = useHistory();
     const { user } = useContext(UserContext);
@@ -29,7 +30,7 @@ export default function History() {
 
     if (!user) {
         history.push("/");
-        return "Redirecionando...";
+        return "Redirecting...";
     }
 
     function getDay(date) {
@@ -47,19 +48,19 @@ export default function History() {
             return "";
         }
 
-        return completeOrIncomplete(dayData);
+        return doneOrMissed(dayData);
     }
 
-    function completeOrIncomplete(dayData) {
-        const areHabitsIncomplete = dayData.habits.some(
+    function doneOrMissed(dayData) {
+        const isHabitsMissed = dayData.habits.some(
             (habit) => habit.done === false
         );
 
-        if (areHabitsIncomplete) {
-            return "incomplete";
+        if (isHabitsMissed) {
+            return "missed";
         }
 
-        return "complete";
+        return "done";
     }
 
     function showHabitsOnClickedDay(date) {
@@ -80,7 +81,7 @@ export default function History() {
             <TopBar />
             <Main>
                 <TitleContainer>
-                    <Title>Historico</Title>
+                    <Title>History</Title>
                 </TitleContainer>
 
                 <HabitsCalendarContainer>
@@ -88,7 +89,7 @@ export default function History() {
                         <Calendar
                             value={value}
                             onChange={onChange}
-                            locale="pt-br"
+                            locale="en"
                             formatDay={(locale, date) => (
                                 <CustomDay className={decideClass(date)}>
                                     {date.getDate()}
@@ -135,7 +136,7 @@ export default function History() {
                                 width="70%"
                                 onClick={() => setIsPopUpOpen(false)}
                             >
-                                Voltar
+                                Go back
                             </Button>
                         </PopUpContainer>
                     )}
@@ -159,17 +160,17 @@ const CustomDay = styled.div`
     width: 35px;
     border-radius: 100%;
 
-    &.complete {
+    &.done {
         background-color: #8ac353;
     }
 
-    &.incomplete {
+    &.missed {
         background-color: #e85665;
     }
 
     &:hover,
-    &:hover.complete,
-    &:hover.incomplete {
+    &:hover.done,
+    &:hover.missed {
         background-color: #1087ff;
         color: #fff;
     }

@@ -39,7 +39,7 @@ export default function Habits() {
 
     if (!user) {
         history.push("/");
-        return "Redirecionando...";
+        return "Redirecting...";
     }
 
     //returns a list of habit cards or a message if list is empty
