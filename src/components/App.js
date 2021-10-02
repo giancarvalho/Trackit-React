@@ -14,7 +14,7 @@ import UserContext from "../contexts/UserContext";
 import History from "./History";
 
 function App() {
-    const [user, setUser] = useState(getStoredUser());
+    const [user, setUser] = useState("");
     const [todayProgress, setTodayProgress] = useState({
         tasks: 0,
         tasksDone: 0,
@@ -22,13 +22,6 @@ function App() {
     const [todayList, setTodayList] = useState([]);
     //controls if habitList needs to be updated
     const [update, setUpdate] = useState(0);
-
-    function getStoredUser() {
-        let storedUser = localStorage.getItem("storedUser");
-        storedUser = JSON.parse(storedUser);
-
-        return storedUser;
-    }
 
     useEffect(() => {
         if (user) {
