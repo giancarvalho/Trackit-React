@@ -49,7 +49,7 @@ const HabitContainer = styled.div`
         margin-top: 15px;
     }
 
-    .cancelar {
+    .cancel {
         background-color: #fff;
         color: #52b6ff;
         margin-right: 25px;

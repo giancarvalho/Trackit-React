@@ -50,8 +50,7 @@ export default function Habits() {
             ))
         ) : (
             <p>
-                You haven't added any habits yet. Add a habit new habit to
-                start!
+                You haven't added any habits yet. Add a habit to start tracking!
             </p>
         );
     }

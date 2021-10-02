@@ -18,14 +18,14 @@ export default function BottomBar() {
     return (
         <BottomBarContainer>
             <Link to="/habits">
-                <p>Hábitos</p>
+                <p>Habits</p>
             </Link>
 
             <ProgressBarContainer>
                 <Link to="/today">
                     <CircularProgressbar
                         value={percentage}
-                        text="Hoje"
+                        text="Today"
                         strokeWidth={12}
                         styles={buildStyles({
                             textColor: "white",
@@ -37,7 +37,7 @@ export default function BottomBar() {
             </ProgressBarContainer>
 
             <Link to="/history">
-                <p>Histórico</p>
+                <p>History</p>
             </Link>
         </BottomBarContainer>
     );
