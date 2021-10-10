@@ -1,3 +1,5 @@
+#TrackIt - React 
+
 TrackIt is a tracking habit app made in ReactJS.
 
 This project makes use of authentication, styled components, react router, react calendar, APIs, among other tools.
