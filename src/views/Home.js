@@ -1,16 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
-import { loginRequest } from "../trackitRequests";
 import {
     Anchor,
     LoginContainer,
     LogoContainer,
     Main,
-} from "./shared/stylesFrontPages";
-import { SubmitButton, Input } from "./shared/stylesApp";
+} from "../components/shared/stylesFrontPages";
+import { SubmitButton, Input } from "../components/shared/stylesApp";
 import { useHistory } from "react-router";
 import UserContext from "../contexts/UserContext";
+import { loginRequest } from "../services/trackitRequests";
 
 export default function Home() {
     const [email, setEmail] = useState("");

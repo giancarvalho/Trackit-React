@@ -1,20 +1,23 @@
 import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import UserContext from "../contexts/UserContext";
-import BottomBar from "./BottomBar";
+import BottomBar from "../components/BottomBar";
 import { Checkbox } from "react-ionicons";
 import {
     Main,
     HabitsContainer,
     Title,
     HabitContainer,
-} from "./shared/stylesApp";
-import TopBar from "./TopBar";
-import { checkHabitRequest, getTodayHabitList } from "../trackitRequests";
+} from "../components/shared/stylesApp";
+import TopBar from "../components/TopBar";
 import ProgressContext from "../contexts/ProgressContext";
 import UpdateContext from "../contexts/UpdateContext";
 import { useHistory } from "react-router";
 import getFormatedDate from "../scripts/getFormatedDate";
+import {
+    checkHabitRequest,
+    getTodayHabitList,
+} from "../services/trackitRequests";
 
 //generates a today habit card
 function TodayHabit({ habit, user }) {

@@ -3,13 +3,13 @@ import {
     LoginContainer,
     LogoContainer,
     Main,
-} from "./shared/stylesFrontPages";
-import { SubmitButton, Input } from "./shared/stylesApp";
+} from "../components/shared/stylesFrontPages";
+import { SubmitButton, Input } from "../components/shared/stylesApp";
 import logo from "../assets/logo.png";
 import { useState } from "react";
-import { registerRequest } from "../trackitRequests";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
+import { registerRequest } from "../services/trackitRequests";
 
 export default function SignUp() {
     const [disabled, setDisabled] = useState(false);

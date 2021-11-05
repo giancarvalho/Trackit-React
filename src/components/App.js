@@ -1,17 +1,17 @@
 import "../reset.css";
 import "../global.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import Home from "./Home";
-import SignUp from "./SignUp";
-import Habits from "./Habits";
-import Today from "./Today";
+import Home from "../views/Home";
+import SignUp from "../views/SignUp";
+import Today from "../views/Today";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 import ProgressContext from "../contexts/ProgressContext";
-import { getTodayHabitList } from "../trackitRequests";
+import { getTodayHabitList } from "../services/trackitRequests";
 import UpdateContext from "../contexts/UpdateContext";
 import UserContext from "../contexts/UserContext";
-import History from "./History";
+import History from "../views/History";
+import Habits from "../views/Habits";
 
 function App() {
     const [user, setUser] = useState("");

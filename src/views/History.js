@@ -1,18 +1,18 @@
-import BottomBar from "./BottomBar";
-import { HabitsContainer, Main, Title } from "./shared/stylesApp";
-import TopBar from "./TopBar";
+import BottomBar from "../components/BottomBar";
+import { HabitsContainer, Main, Title } from "../components/shared/stylesApp";
+import TopBar from "../components/TopBar";
 import styled from "styled-components";
 import { useHistory } from "react-router";
 import UserContext from "../contexts/UserContext";
 import { useContext, useEffect, useState } from "react";
 import Calendar from "react-calendar";
-import "./StylesHistory";
-import { HabitsCalendarContainer } from "./StylesHistory";
-import { getHistory } from "../trackitRequests";
+import "../components/StylesHistory";
+import { HabitsCalendarContainer } from "../components/StylesHistory";
 import Loader from "react-loader-spinner";
 import dayjs from "dayjs";
 import getFormatedDate from "../scripts/getFormatedDate";
-import { Button } from "./shared/stylesApp";
+import { Button } from "../components/shared/stylesApp";
+import { getHistory } from "../services/trackitRequests";
 
 export default function History() {
     const history = useHistory();

@@ -2,13 +2,18 @@ import { useContext, useState, useEffect } from "react";
 import Loader from "react-loader-spinner";
 import { useHistory } from "react-router";
 import styled from "styled-components";
+import BottomBar from "../components/BottomBar";
+import { Habit, HabitForm } from "../components/Habit";
+import TopBar from "../components/TopBar";
 import UpdateContext from "../contexts/UpdateContext";
 import UserContext from "../contexts/UserContext";
-import { getHabitList } from "../trackitRequests";
-import BottomBar from "./BottomBar";
-import { Habit, HabitForm } from "./Habit";
-import { Button, HabitsContainer, Title, Main } from "./shared/stylesApp";
-import TopBar from "./TopBar";
+import { getHabitList } from "../services/trackitRequests";
+import {
+    Button,
+    HabitsContainer,
+    Title,
+    Main,
+} from "../components/shared/stylesApp";
 
 export default function Habits() {
     const [insertHabit, setInsertHabit] = useState(false);

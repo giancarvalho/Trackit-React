@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import styled from "styled-components";
 import UserContext from "../contexts/UserContext";
-import { createHabitRequest, deleteHabitRequest } from "../trackitRequests";
 import {
     Button,
     SubmitButton,
@@ -10,6 +9,10 @@ import {
 } from "./shared/stylesApp";
 import { TrashOutline } from "react-ionicons";
 import UpdateContext from "../contexts/UpdateContext";
+import {
+    createHabitRequest,
+    deleteHabitRequest,
+} from "../services/trackitRequests";
 
 function Day({ dayNumber, dayName, newHabit, setNewHabit, isSelected }) {
     const [selected, setSelected] = useState(isSelected);
