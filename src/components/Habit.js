@@ -38,7 +38,7 @@ function Day({ dayNumber, dayName, newHabit, setNewHabit, isSelected }) {
     );
 }
 //generates form for creating a new habit
-function HabitForm({ setInsertHabit, newHabit, setNewHabit }) {
+function HabitForm({ switchHabitForm, newHabit, setNewHabit }) {
     const [disabled, setDisabled] = useState(false);
     const { user } = useContext(UserContext);
     const week = { Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6, Sun: 0 };
@@ -56,7 +56,7 @@ function HabitForm({ setInsertHabit, newHabit, setNewHabit }) {
     function create() {
         createHabitRequest(newHabit, user.token)
             .then((response) => {
-                setInsertHabit(null);
+                switchHabitForm();
                 setNewHabit({ name: "", days: [] });
             })
             .catch((error) => {
@@ -96,7 +96,7 @@ function HabitForm({ setInsertHabit, newHabit, setNewHabit }) {
                             width="84px"
                             height="35px"
                             className="cancel"
-                            onClick={() => setInsertHabit(false)}
+                            onClick={switchHabitForm}
                         >
                             Cancel
                         </Button>

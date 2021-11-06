@@ -19,7 +19,9 @@ export default function TodayHabitCard({ habit, user }) {
 
         checkHabitRequest(habit.id, operation, user.token).catch((error) => {
             setChecked(!checked);
-            alert("Sorry, we are having problems reaching our server.");
+            alert(
+                "Sorry, we are having problems reaching our server. Reload the page and try again"
+            );
         });
     }
 

@@ -22,12 +22,8 @@ export default function Habits() {
     const history = useHistory();
 
     //opens and closes create habit form
-    function addHabit() {
-        if (!insertHabit) {
-            setInsertHabit(true);
-        } else {
-            setInsertHabit(null);
-        }
+    function switchHabitForm() {
+        setInsertHabit(!insertHabit);
     }
 
     useEffect(() => {
@@ -67,7 +63,7 @@ export default function Habits() {
                     <Button
                         width="40px"
                         height="35px"
-                        onClick={() => addHabit()}
+                        onClick={switchHabitForm}
                     >
                         +
                     </Button>
@@ -76,7 +72,7 @@ export default function Habits() {
                 <HabitsContainer>
                     {insertHabit && (
                         <HabitForm
-                            setInsertHabit={setInsertHabit}
+                            switchHabitForm={switchHabitForm}
                             newHabit={newHabit}
                             setNewHabit={setNewHabit}
                         />
