@@ -17,7 +17,7 @@ export default function Home() {
     const [disabled, setDisabled] = useState(false);
     const [password, setPassword] = useState("");
     const history = useHistory();
-    const { user, setUser } = useContext(UserContext);
+    const { setUser } = useContext(UserContext);
 
     useEffect(() => {
         const storedUser = getStoredUser();
@@ -26,7 +26,7 @@ export default function Home() {
             setUser(storedUser);
             history.push("/today");
         }
-    }, []);
+    });
 
     function getStoredUser() {
         let storedUser = localStorage.getItem("storedUser");
@@ -84,13 +84,13 @@ export default function Home() {
                             height="45px"
                             disabled={disabled}
                         >
-                            Entrar
+                            Sign In
                         </SubmitButton>
                     </fieldset>
                 </form>
             </LoginContainer>
             <Link to="/signup">
-                <Anchor>Não tem uma conta? Cadastre-se!</Anchor>
+                <Anchor>First time? Sign up!</Anchor>
             </Link>
         </Main>
     );

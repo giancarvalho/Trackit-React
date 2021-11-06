@@ -9,9 +9,10 @@ import { useState } from "react";
 import UserContext from "../contexts/UserContext";
 import History from "../views/History";
 import Habits from "../views/Habits";
+import PrivateRoute from "../routes/privateRoute";
 
 function App() {
-    const [user, setUser] = useState("");
+    const [user, setUser] = useState({ token: null });
 
     return (
         <UserContext.Provider value={{ user, setUser }}>
@@ -25,15 +26,11 @@ function App() {
                             <SignUp />
                         </Route>
 
-                        <Route path="/today" exact>
-                            <Today />
-                        </Route>
-                        <Route path="/habits" exact>
-                            <Habits />
-                        </Route>
-                        <Route path="/history" exact>
-                            <History />
-                        </Route>
+                        <PrivateRoute path="/today" element={Today} exact />
+
+                        <PrivateRoute path="/habits" element={Habits} exact />
+
+                        <PrivateRoute path="/history" element={History} exact />
                     </Switch>
                 </div>
             </Router>

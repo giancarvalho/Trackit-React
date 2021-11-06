@@ -2,9 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import Loader from "react-loader-spinner";
 import { useHistory } from "react-router";
 import styled from "styled-components";
-import BottomBar from "../components/BottomBar";
 import { Habit, HabitForm } from "../components/Habit";
-import TopBar from "../components/TopBar";
 import UserContext from "../contexts/UserContext";
 import { getHabitList } from "../services/trackitRequests";
 import {
@@ -68,46 +66,38 @@ export default function Habits() {
     }
 
     return (
-        <>
-            <TopBar />
-            <Main>
-                <TitleContainer>
-                    <Title>My habits</Title>
-                    <Button
-                        width="40px"
-                        height="35px"
-                        onClick={switchHabitForm}
-                    >
-                        +
-                    </Button>
-                </TitleContainer>
+        <Main>
+            <TitleContainer>
+                <Title>My habits</Title>
+                <Button width="40px" height="35px" onClick={switchHabitForm}>
+                    +
+                </Button>
+            </TitleContainer>
 
-                <HabitsContainer>
-                    {insertHabit && (
-                        <HabitForm
-                            switchHabitForm={switchHabitForm}
-                            newHabit={newHabit}
-                            setNewHabit={setNewHabit}
-                            updateHabitList={updateHabitList}
+            <HabitsContainer>
+                {insertHabit && (
+                    <HabitForm
+                        switchHabitForm={switchHabitForm}
+                        newHabit={newHabit}
+                        setNewHabit={setNewHabit}
+                        updateHabitList={updateHabitList}
+                    />
+                )}
+
+                {habitList ? (
+                    <ListOrMessage />
+                ) : (
+                    <LoaderContainer>
+                        <Loader
+                            type="ThreeDots"
+                            color="#52B6FF"
+                            height={75}
+                            width={75}
                         />
-                    )}
-
-                    {habitList ? (
-                        <ListOrMessage />
-                    ) : (
-                        <LoaderContainer>
-                            <Loader
-                                type="ThreeDots"
-                                color="#52B6FF"
-                                height={75}
-                                width={75}
-                            />
-                        </LoaderContainer>
-                    )}
-                </HabitsContainer>
-            </Main>
-            <BottomBar />
-        </>
+                    </LoaderContainer>
+                )}
+            </HabitsContainer>
+        </Main>
     );
 }
 

@@ -1,8 +1,5 @@
-import BottomBar from "../components/BottomBar";
-import { HabitsContainer, Main, Title } from "../components/shared/stylesApp";
-import TopBar from "../components/TopBar";
+import { Main, Title } from "../components/shared/stylesApp";
 import styled from "styled-components";
-import { useHistory } from "react-router";
 import UserContext from "../contexts/UserContext";
 import { useContext, useEffect, useState } from "react";
 import Calendar from "react-calendar";
@@ -15,7 +12,6 @@ import { Button } from "../components/shared/stylesApp";
 import { getHistory } from "../services/trackitRequests";
 
 export default function History() {
-    const history = useHistory();
     const { user } = useContext(UserContext);
     const [value, onChange] = useState(new Date());
     const [habitList, setHabitList] = useState(null);
@@ -26,12 +22,7 @@ export default function History() {
         getHistory(user.token)
             .then((response) => setHabitList(response.data))
             .catch((error) => console.log(error));
-    }, []);
-
-    if (!user) {
-        history.push("/");
-        return "Redirecting...";
-    }
+    }, [user.token]);
 
     function getDay(date) {
         const day = dayjs(date).format("DD/MM/YYYY");
@@ -77,73 +68,69 @@ export default function History() {
     }
 
     return (
-        <>
-            <TopBar />
-            <Main>
-                <TitleContainer>
-                    <Title>History</Title>
-                </TitleContainer>
+        <Main>
+            <TitleContainer>
+                <Title>History</Title>
+            </TitleContainer>
 
-                <HabitsCalendarContainer>
-                    {habitList ? (
-                        <Calendar
-                            value={value}
-                            onChange={onChange}
-                            locale="en"
-                            formatDay={(locale, date) => (
-                                <CustomDay className={decideClass(date)}>
-                                    {date.getDate()}
-                                </CustomDay>
-                            )}
-                            onClickDay={(value, event) =>
-                                showHabitsOnClickedDay(value)
-                            }
+            <HabitsCalendarContainer>
+                {habitList ? (
+                    <Calendar
+                        value={value}
+                        onChange={onChange}
+                        locale="en"
+                        formatDay={(locale, date) => (
+                            <CustomDay className={decideClass(date)}>
+                                {date.getDate()}
+                            </CustomDay>
+                        )}
+                        onClickDay={(value, event) =>
+                            showHabitsOnClickedDay(value)
+                        }
+                    />
+                ) : (
+                    <LoaderContainer>
+                        <Loader
+                            type="ThreeDots"
+                            color="#52B6FF"
+                            height={75}
+                            width={75}
                         />
-                    ) : (
-                        <LoaderContainer>
-                            <Loader
-                                type="ThreeDots"
-                                color="#52B6FF"
-                                height={75}
-                                width={75}
-                            />
-                        </LoaderContainer>
-                    )}
-                    {isPopUpOpen && (
-                        <PopUpContainer isPopUpOpen={isPopUpOpen}>
-                            <div>
-                                <h1>{dayHabits.day}</h1>
-                                <ul>
-                                    {dayHabits.habits.map((habit, index) => (
-                                        <li
-                                            key={index}
-                                            className={
-                                                habit.done ? "done" : "missed"
-                                            }
-                                        >
-                                            {habit.done ? (
-                                                <span>&#10003;</span>
-                                            ) : (
-                                                <span>&#9932;</span>
-                                            )}{" "}
-                                            {habit.name}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                            <Button
-                                height="20%"
-                                width="70%"
-                                onClick={() => setIsPopUpOpen(false)}
-                            >
-                                Go back
-                            </Button>
-                        </PopUpContainer>
-                    )}
-                </HabitsCalendarContainer>
-            </Main>
-            <BottomBar />
-        </>
+                    </LoaderContainer>
+                )}
+                {isPopUpOpen && (
+                    <PopUpContainer isPopUpOpen={isPopUpOpen}>
+                        <div>
+                            <h1>{dayHabits.day}</h1>
+                            <ul>
+                                {dayHabits.habits.map((habit, index) => (
+                                    <li
+                                        key={index}
+                                        className={
+                                            habit.done ? "done" : "missed"
+                                        }
+                                    >
+                                        {habit.done ? (
+                                            <span>&#10003;</span>
+                                        ) : (
+                                            <span>&#9932;</span>
+                                        )}{" "}
+                                        {habit.name}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <Button
+                            height="20%"
+                            width="70%"
+                            onClick={() => setIsPopUpOpen(false)}
+                        >
+                            Go back
+                        </Button>
+                    </PopUpContainer>
+                )}
+            </HabitsCalendarContainer>
+        </Main>
     );
 }
 

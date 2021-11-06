@@ -27,7 +27,9 @@ export default function SignUp() {
         registerRequest(form)
             .then(() => history.push("/"))
             .catch((error) => {
-                alert("Ops, ocorreu um erro no seu signup. Tente novamente.");
+                alert(
+                    "Ops, we can't reach our server at the moment. Check your connection and reload the page."
+                );
                 setDisabled(false);
             });
     }
@@ -79,13 +81,13 @@ export default function SignUp() {
                             height="45px"
                             disabled={disabled}
                         >
-                            Cadastrar
+                            Sign Up
                         </SubmitButton>
                     </fieldset>
                 </form>
             </LoginContainer>
             <Link to="/">
-                <Anchor href="#">Já tem uma conta? Faça Login!</Anchor>
+                <Anchor href="#">Already have an account? Sign in!</Anchor>
             </Link>
         </Main>
     );

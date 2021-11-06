@@ -185,7 +185,7 @@ const DaysContainer = styled.div`
 const DayContainer = styled.button`
     height: 30px;
     width: 30px;
-    margin-right: 5px;
+    margin: 0 5px 4px 0;
     background-color: ${(props) =>
         props.selected ? "#CFCFCF" : "transparent"};
     border: 1px solid #d4d4d4;
