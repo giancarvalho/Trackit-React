@@ -2,46 +2,13 @@ import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import UserContext from "../contexts/UserContext";
 import BottomBar from "../components/BottomBar";
-import { Checkbox } from "react-ionicons";
-import {
-    Main,
-    HabitsContainer,
-    Title,
-    HabitContainer,
-} from "../components/shared/stylesApp";
+
+import { Main, HabitsContainer, Title } from "../components/shared/stylesApp";
 import TopBar from "../components/TopBar";
 import { useHistory } from "react-router";
 import getFormatedDate from "../scripts/getFormatedDate";
-import {
-    checkHabitRequest,
-    getTodayHabitList,
-} from "../services/trackitRequests";
-
-//generates a today habit card
-function TodayHabit({ habit, user }) {
-    const [checked, setChecked] = useState(habit.done);
-    console.log(habit);
-    return (
-        <TodayHabitContainer>
-            <div>
-                <h1>{habit.name}</h1>
-                <p>
-                    Current streak: <span>{habit.currentSequence} days</span>
-                </p>
-                <p>
-                    Your record:
-                    <span> {habit.highestSequence} days</span>{" "}
-                </p>
-            </div>
-            <Checkbox
-                color={checked ? "#8FC549" : "#E7E7E7"}
-                height="100px"
-                width="100px"
-                onClick={() => setChecked(!checked)}
-            />
-        </TodayHabitContainer>
-    );
-}
+import { getTodayHabitList } from "../services/trackitRequests";
+import TodayHabitCard from "../components/todayHabitCard";
 
 export default function Today() {
     let { user } = useContext(UserContext);
@@ -78,7 +45,11 @@ export default function Today() {
                         </p>
                     ) : (
                         todayList.map((habit, index) => (
-                            <TodayHabit habit={habit} user={user} key={index} />
+                            <TodayHabitCard
+                                habit={habit}
+                                user={user}
+                                key={index}
+                            />
                         ))
                     )}
                 </HabitsContainer>
@@ -99,21 +70,6 @@ const TitleContainer = styled.div`
         font-size: 18px;
         color: #bababa;
         margin-top: 8px;
-    }
-
-    .done {
-        color: #8fc549;
-    }
-`;
-
-const TodayHabitContainer = styled(HabitContainer)`
-    display: flex;
-    justify-content: space-between;
-    padding: 13px;
-
-    p {
-        font-size: 13px;
-        line-height: 17px;
     }
 
     .done {
