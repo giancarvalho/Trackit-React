@@ -8,7 +8,6 @@ import {
     Input,
 } from "./shared/stylesApp";
 import { TrashOutline } from "react-ionicons";
-import UpdateContext from "../contexts/UpdateContext";
 import {
     createHabitRequest,
     deleteHabitRequest,
@@ -43,7 +42,6 @@ function HabitForm({ setInsertHabit, newHabit, setNewHabit }) {
     const [disabled, setDisabled] = useState(false);
     const { user } = useContext(UserContext);
     const week = { Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6, Sun: 0 };
-    const { setUpdate, update } = useContext(UpdateContext);
 
     function createHabit(event) {
         event.preventDefault();
@@ -60,7 +58,6 @@ function HabitForm({ setInsertHabit, newHabit, setNewHabit }) {
             .then((response) => {
                 setInsertHabit(null);
                 setNewHabit({ name: "", days: [] });
-                setUpdate(update + 1);
             })
             .catch((error) => {
                 alert("An error occurred. Please, refresh the page.");
@@ -121,7 +118,6 @@ function HabitForm({ setInsertHabit, newHabit, setNewHabit }) {
 //generates a habit card with a delete button
 function Habit({ habitData }) {
     const { user } = useContext(UserContext);
-    const { setUpdate, update } = useContext(UpdateContext);
     const week = { Seg: 1, Ter: 2, Quar: 3, Quin: 4, Sex: 5, Sab: 6, Dom: 0 };
 
     function deleteHabit(id) {
@@ -130,13 +126,11 @@ function Habit({ habitData }) {
         );
 
         if (confirmation) {
-            deleteHabitRequest(id, user.token)
-                .then(() => setUpdate(update + 1))
-                .catch(() =>
-                    alert(
-                        "An error occurred. Your habit wasn't deleted. Please, try again in a few moments."
-                    )
-                );
+            deleteHabitRequest(id, user.token).catch(() =>
+                alert(
+                    "An error occurred. Your habit wasn't deleted. Please, try again in a few moments."
+                )
+            );
             return;
         }
 

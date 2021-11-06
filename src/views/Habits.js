@@ -5,7 +5,6 @@ import styled from "styled-components";
 import BottomBar from "../components/BottomBar";
 import { Habit, HabitForm } from "../components/Habit";
 import TopBar from "../components/TopBar";
-import UpdateContext from "../contexts/UpdateContext";
 import UserContext from "../contexts/UserContext";
 import { getHabitList } from "../services/trackitRequests";
 import {
@@ -19,7 +18,6 @@ export default function Habits() {
     const [insertHabit, setInsertHabit] = useState(false);
     const [habitList, setHabitList] = useState(null);
     const [newHabit, setNewHabit] = useState({ name: "", days: [] });
-    const { update } = useContext(UpdateContext);
     const { user } = useContext(UserContext);
     const history = useHistory();
 
@@ -40,7 +38,7 @@ export default function Habits() {
                 setHabitList(list);
             });
         }
-    }, [update]);
+    }, []);
 
     if (!user) {
         history.push("/");
