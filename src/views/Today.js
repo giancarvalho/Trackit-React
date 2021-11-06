@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import UserContext from "../contexts/UserContext";
 import BottomBar from "../components/BottomBar";
-
 import { Main, HabitsContainer, Title } from "../components/shared/stylesApp";
 import TopBar from "../components/TopBar";
 import { useHistory } from "react-router";
@@ -23,7 +22,7 @@ export default function Today() {
                 setTodayList(list);
             });
         }
-    }, []);
+    }, [user]);
 
     if (!user) {
         history.push("/");
@@ -63,7 +62,7 @@ const TitleContainer = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 100px;
+    height: 60px;
     width: 100%;
 
     p {

@@ -38,7 +38,7 @@ export default function Habits() {
                 setHabitList(list);
             });
         }
-    }, []);
+    }, [user]);
 
     if (!user) {
         history.push("/");
