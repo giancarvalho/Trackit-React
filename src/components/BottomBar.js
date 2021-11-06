@@ -2,18 +2,9 @@ import styled from "styled-components";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
-import ProgressContext from "../contexts/ProgressContext";
 
 export default function BottomBar() {
-    const { todayProgress } = useContext(ProgressContext);
-    let progress = (todayProgress.tasksDone / todayProgress.tasks) * 100;
-
-    if (isNaN(progress)) {
-        progress = 0;
-    }
-
-    const percentage = Number(progress);
+    const percentage = 50;
 
     return (
         <BottomBarContainer>

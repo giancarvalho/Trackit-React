@@ -10,8 +10,6 @@ import {
     HabitContainer,
 } from "../components/shared/stylesApp";
 import TopBar from "../components/TopBar";
-import ProgressContext from "../contexts/ProgressContext";
-import UpdateContext from "../contexts/UpdateContext";
 import { useHistory } from "react-router";
 import getFormatedDate from "../scripts/getFormatedDate";
 import {
@@ -22,115 +20,32 @@ import {
 //generates a today habit card
 function TodayHabit({ habit, user }) {
     const [checked, setChecked] = useState(habit.done);
-    const { update, setUpdate } = useContext(UpdateContext);
-    const { todayProgress, setTodayProgress } = useContext(ProgressContext);
-    //controls habit values locally to decrease animation delay
-    const [habitClone, setHabitClone] = useState({ ...habit });
-
-    function checkHabit(id) {
-        if (!habit.done) {
-            setChecked(true);
-            updateValues("+");
-            checkHabitRequest(id, "check", user.token)
-                .then(() => setUpdate(update + 1))
-                .catch(() => {
-                    alert("Ocorreu um problema. Tente Novamente");
-                });
-            return;
-        }
-
-        updateValues("-");
-        setChecked(false);
-        checkHabitRequest(id, "uncheck", user.token)
-            .then(() => setUpdate(update + 1))
-            .catch(() => {
-                alert("Ocorreu um problema. Tente Novamente");
-            });
-    }
-
-    //updates Clone and Progress values
-    function updateValues(operation) {
-        const isEqualSequence =
-            habitClone.currentSequence === habitClone.highestSequence;
-        let newSequenceValue = habitClone.currentSequence;
-        let newProgressValue = todayProgress.tasksDone;
-
-        if (operation === "+") {
-            newSequenceValue++;
-            newProgressValue++;
-        } else {
-            newSequenceValue--;
-            newProgressValue--;
-        }
-
-        updateClone(newSequenceValue, isEqualSequence);
-        updateProgress(newProgressValue);
-    }
-
-    function updateClone(newValue, equal) {
-        if (equal) {
-            setHabitClone({
-                ...habitClone,
-                currentSequence: newValue,
-                highestSequence: newValue,
-                done: !habitClone.done,
-            });
-        } else {
-            setHabitClone({
-                ...habitClone,
-                currentSequence: newValue,
-                done: !habitClone.done,
-            });
-        }
-    }
-
-    //updates progress directly to decrease animation delay
-    function updateProgress(newValue) {
-        setTodayProgress({
-            ...todayProgress,
-            tasksDone: newValue,
-        });
-    }
-
+    console.log(habit);
     return (
         <TodayHabitContainer>
             <div>
-                <h1>{habitClone.name}</h1>
+                <h1>{habit.name}</h1>
                 <p>
-                    Current streak:{" "}
-                    <span className={habitClone.done ? "done" : ""}>
-                        {habitClone.currentSequence} days
-                    </span>
+                    Current streak: <span>{habit.currentSequence} days</span>
                 </p>
                 <p>
-                    Your record:{" "}
-                    <span
-                        className={
-                            habitClone.highestSequence ===
-                                habitClone.currentSequence &&
-                            habitClone.highestSequence > 0
-                                ? "done"
-                                : ""
-                        }
-                    >
-                        {habitClone.highestSequence} days
-                    </span>{" "}
+                    Your record:
+                    <span> {habit.highestSequence} days</span>{" "}
                 </p>
             </div>
             <Checkbox
                 color={checked ? "#8FC549" : "#E7E7E7"}
                 height="100px"
                 width="100px"
-                onClick={() => checkHabit(habit.id)}
+                onClick={() => setChecked(!checked)}
             />
         </TodayHabitContainer>
     );
 }
 
-export default function Today({ todayList, setTodayList }) {
+export default function Today() {
     let { user } = useContext(UserContext);
-    const { todayProgress } = useContext(ProgressContext);
-    const progress = (todayProgress.tasksDone / todayProgress.tasks) * 100;
+    const [todayList, setTodayList] = useState([]);
     const history = useHistory();
 
     useEffect(() => {
@@ -154,13 +69,6 @@ export default function Today({ todayList, setTodayList }) {
             <Main>
                 <TitleContainer>
                     <Title>{getFormatedDate()}</Title>
-                    {progress === 0 || isNaN(progress) ? (
-                        <p>No habits were done yet</p>
-                    ) : (
-                        <p className="done">
-                            {progress.toFixed()}% habits done
-                        </p>
-                    )}
                 </TitleContainer>
                 <HabitsContainer>
                     {todayList.length === 0 ? (
