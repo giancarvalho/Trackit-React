@@ -1,12 +1,13 @@
 import { HabitContainer } from "./shared/stylesApp";
 import styled from "styled-components";
 import { Checkbox } from "react-ionicons";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { checkHabitRequest } from "../services/trackitRequests";
+import TodayListContext from "../contexts/TodayListContext";
 
-//generates a today habit card
 export default function TodayHabitCard({ habit, user }) {
     const [checked, setChecked] = useState(habit.done);
+    const { todayList, setTodayList } = useContext(TodayListContext);
     const [sequences, setSequences] = useState({
         current: habit.currentSequence,
         highest: habit.highestSequence,
@@ -15,14 +16,27 @@ export default function TodayHabitCard({ habit, user }) {
     function checkHabit() {
         const operation = checked ? "uncheck" : "check";
         setChecked(!checked);
+        updateTodayList();
         recalcSequences(operation);
 
         checkHabitRequest(habit.id, operation, user.token).catch((error) => {
             setChecked(!checked);
+            updateTodayList();
             alert(
                 "Sorry, we are having problems reaching our server. Reload the page and try again"
             );
         });
+    }
+
+    function updateTodayList() {
+        setTodayList(
+            todayList.map((todayHabit) => {
+                if (todayHabit.id === habit.id)
+                    return { ...todayHabit, done: !checked };
+
+                return todayHabit;
+            })
+        );
     }
 
     function recalcSequences(operation) {

@@ -2,9 +2,23 @@ import styled from "styled-components";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-export default function BottomBar() {
-    const percentage = 50;
+export default function BottomBar({ todayList }) {
+    const [percentage, setPercentage] = useState(0);
+    console.log(todayList);
+    useEffect(() => {
+        setPercentage(() => {
+            let numberTasksDone = todayList.reduce((preValue, habit) => {
+                if (habit.done) return preValue + 1;
+
+                return preValue;
+            }, 0);
+            console.log("number tasks done is " + numberTasksDone);
+
+            return (numberTasksDone / todayList.length) * 100;
+        });
+    }, [todayList]);
 
     return (
         <BottomBarContainer>

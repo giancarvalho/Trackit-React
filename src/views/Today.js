@@ -1,24 +1,14 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import styled from "styled-components";
 import UserContext from "../contexts/UserContext";
 import { Main, HabitsContainer, Title } from "../components/shared/stylesApp";
 import getFormatedDate from "../scripts/getFormatedDate";
-import { getTodayHabitList } from "../services/trackitRequests";
 import TodayHabitCard from "../components/todayHabitCard";
+import TodayListContext from "../contexts/TodayListContext";
 
 export default function Today() {
     let { user } = useContext(UserContext);
-    const [todayList, setTodayList] = useState([]);
-
-    useEffect(() => {
-        if (user) {
-            getTodayHabitList(user.token).then((response) => {
-                let list = response.data;
-                list = list.sort().reverse();
-                setTodayList(list);
-            });
-        }
-    }, [user]);
+    const { todayList } = useContext(TodayListContext);
 
     return (
         <Main>
