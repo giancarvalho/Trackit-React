@@ -38,7 +38,12 @@ function Day({ dayNumber, dayName, newHabit, setNewHabit, isSelected }) {
     );
 }
 //generates form for creating a new habit
-function HabitForm({ switchHabitForm, newHabit, setNewHabit }) {
+function HabitForm({
+    switchHabitForm,
+    newHabit,
+    setNewHabit,
+    updateHabitList,
+}) {
     const [disabled, setDisabled] = useState(false);
     const { user } = useContext(UserContext);
     const week = { Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6, Sun: 0 };
@@ -54,6 +59,7 @@ function HabitForm({ switchHabitForm, newHabit, setNewHabit }) {
     }
 
     function create() {
+        updateHabitList(newHabit, "add");
         createHabitRequest(newHabit, user.token)
             .then((response) => {
                 switchHabitForm();
@@ -116,21 +122,24 @@ function HabitForm({ switchHabitForm, newHabit, setNewHabit }) {
 }
 
 //generates a habit card with a delete button
-function Habit({ habitData }) {
+function Habit({ habitData, updateHabitList }) {
     const { user } = useContext(UserContext);
     const week = { Seg: 1, Ter: 2, Quar: 3, Quin: 4, Sex: 5, Sab: 6, Dom: 0 };
 
-    function deleteHabit(id) {
+    function deleteHabit() {
         let confirmation = window.confirm(
             "Do you really want to delete this habit? This action can't be undone"
         );
+        const targetHabit = habitData;
+        updateHabitList(targetHabit);
 
         if (confirmation) {
-            deleteHabitRequest(id, user.token).catch(() =>
+            deleteHabitRequest(targetHabit.id, user.token).catch(() => {
+                updateHabitList(targetHabit, "add");
                 alert(
                     "An error occurred. Your habit wasn't deleted. Please, try again in a few moments."
-                )
-            );
+                );
+            });
             return;
         }
 

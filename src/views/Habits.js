@@ -21,11 +21,6 @@ export default function Habits() {
     const { user } = useContext(UserContext);
     const history = useHistory();
 
-    //opens and closes create habit form
-    function switchHabitForm() {
-        setInsertHabit(!insertHabit);
-    }
-
     useEffect(() => {
         if (user) {
             getHabitList(user.token).then((response) => {
@@ -36,6 +31,20 @@ export default function Habits() {
         }
     }, [user]);
 
+    //opens and closes create habit form
+    function switchHabitForm() {
+        setInsertHabit(!insertHabit);
+    }
+
+    function updateHabitList(targetHabit, operation) {
+        if (operation === "add") {
+            setHabitList((habitList) => [targetHabit, ...habitList]);
+            return;
+        }
+
+        setHabitList(habitList.filter((habit) => habit.id !== targetHabit.id));
+    }
+
     if (!user) {
         history.push("/");
         return "Redirecting...";
@@ -45,7 +54,11 @@ export default function Habits() {
     function ListOrMessage() {
         return habitList.length > 0 ? (
             habitList.map((habit, index) => (
-                <Habit habitData={habit} key={index} />
+                <Habit
+                    habitData={habit}
+                    key={index}
+                    updateHabitList={updateHabitList}
+                />
             ))
         ) : (
             <p>
@@ -75,6 +88,7 @@ export default function Habits() {
                             switchHabitForm={switchHabitForm}
                             newHabit={newHabit}
                             setNewHabit={setNewHabit}
+                            updateHabitList={updateHabitList}
                         />
                     )}
 

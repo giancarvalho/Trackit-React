@@ -56,7 +56,8 @@ export default function TodayHabitCard({ habit, user }) {
                     Your record:
                     <span
                         className={
-                            sequences.highest === sequences.current
+                            sequences.highest === sequences.current &&
+                            sequences.highest
                                 ? "done"
                                 : ""
                         }
