@@ -102,6 +102,23 @@ const HabitsContainer = styled.div`
     }
 `;
 
+const DaysContainer = styled.div`
+    width: 100%;
+    margin: 7px 0;
+`;
+
+const DayContainer = styled.button`
+    height: 30px;
+    width: 30px;
+    margin: 0 5px 4px 0;
+    background-color: ${(props) =>
+        props.selected ? "#CFCFCF" : "transparent"};
+    border: 1px solid #d4d4d4;
+    border-radius: 4px;
+    color: ${(props) => (props.selected ? "#fff" : "#d4d4d4")};
+    font-size: 18px;
+`;
+
 export {
     HabitContainer,
     Input,
@@ -110,4 +127,6 @@ export {
     Title,
     HabitsContainer,
     Button,
+    DayContainer,
+    DaysContainer,
 };

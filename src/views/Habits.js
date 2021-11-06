@@ -1,8 +1,8 @@
 import { useContext, useState, useEffect } from "react";
 import Loader from "react-loader-spinner";
-import { useHistory } from "react-router";
 import styled from "styled-components";
-import { Habit, HabitForm } from "../components/Habit";
+import { Habit } from "../components/Habit";
+import HabitForm from "../components/HabitForm";
 import UserContext from "../contexts/UserContext";
 import { getHabitList } from "../services/trackitRequests";
 import {
@@ -17,7 +17,6 @@ export default function Habits() {
     const [habitList, setHabitList] = useState(null);
     const [newHabit, setNewHabit] = useState({ name: "", days: [] });
     const { user } = useContext(UserContext);
-    const history = useHistory();
 
     useEffect(() => {
         if (user) {
@@ -41,11 +40,6 @@ export default function Habits() {
         }
 
         setHabitList(habitList.filter((habit) => habit.id !== targetHabit.id));
-    }
-
-    if (!user) {
-        history.push("/");
-        return "Redirecting...";
     }
 
     //returns a list of habit cards or a message if list is empty
