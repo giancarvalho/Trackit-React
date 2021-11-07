@@ -11,13 +11,16 @@ import {
     Title,
     Main,
 } from "../components/shared/stylesApp";
+import TodayListContext from "../contexts/TodayListContext";
 
 export default function Habits() {
+    const { user } = useContext(UserContext);
+    const { todayList, setTodayList } = useContext(TodayListContext);
     const [insertHabit, setInsertHabit] = useState(false);
     const [habitList, setHabitList] = useState(null);
     const [newHabit, setNewHabit] = useState({ name: "", days: [] });
-    const { user } = useContext(UserContext);
-
+    const today = new Date().getDay();
+    console.log(newHabit);
     useEffect(() => {
         if (user) {
             getHabitList(user.token).then((response) => {
@@ -36,10 +39,20 @@ export default function Habits() {
     function updateHabitList(targetHabit, operation) {
         if (operation === "add") {
             setHabitList((habitList) => [targetHabit, ...habitList]);
+
             return;
         }
 
+        deleteFromTodayList(targetHabit);
         setHabitList(habitList.filter((habit) => habit.id !== targetHabit.id));
+    }
+
+    function deleteFromTodayList(targetHabit) {
+        if (targetHabit.days.includes(today)) {
+            setTodayList(
+                todayList.filter((habit) => habit.id !== targetHabit.id)
+            );
+        }
     }
 
     //returns a list of habit cards or a message if list is empty
