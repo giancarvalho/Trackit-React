@@ -44,6 +44,7 @@ export default function SignUp() {
                     <fieldset disabled={disabled}>
                         <Input
                             placeholder="email"
+                            type="email"
                             value={form.email}
                             onChange={(e) =>
                                 setForm({ ...form, email: e.target.value })
@@ -51,7 +52,8 @@ export default function SignUp() {
                             required
                         />
                         <Input
-                            placeholder="senha"
+                            placeholder="password"
+                            type="password"
                             value={form.password}
                             onChange={(e) =>
                                 setForm({ ...form, password: e.target.value })
@@ -59,7 +61,7 @@ export default function SignUp() {
                             required
                         />
                         <Input
-                            placeholder="nome"
+                            placeholder="name"
                             value={form.name}
                             onChange={(e) =>
                                 setForm({ ...form, name: e.target.value })
@@ -68,7 +70,7 @@ export default function SignUp() {
                         />
                         <Input
                             type="url"
-                            placeholder="foto"
+                            placeholder="profile pic url"
                             value={form.image}
                             onChange={(e) =>
                                 setForm({ ...form, image: e.target.value })

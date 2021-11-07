@@ -54,7 +54,7 @@ export default function Home() {
                 history.push("/today");
             })
             .catch((error) => {
-                alert("Confira novamente suas credenciais");
+                alert("Password incorrect");
                 setDisabled(false);
             });
     }
@@ -69,12 +69,13 @@ export default function Home() {
                     <fieldset disabled={disabled}>
                         <Input
                             placeholder="email"
+                            type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
                         <Input
                             type="password"
-                            placeholder="senha"
+                            placeholder="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
