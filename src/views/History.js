@@ -33,11 +33,11 @@ export default function History() {
     }
 
     function decideClass(date) {
-        const dayData = getDay(date);
+        if (dayjs(date).format("DD/MM") === dayjs().format("DD/MM"))
+            return "today";
 
-        if (!dayData) {
-            return "";
-        }
+        const dayData = getDay(date);
+        if (!dayData) return "";
 
         return doneOrMissed(dayData);
     }
@@ -153,6 +153,10 @@ const CustomDay = styled.div`
 
     &.missed {
         background-color: #e85665;
+    }
+
+    &.today {
+        background-color: #f0ff6d;
     }
 
     &:hover,
