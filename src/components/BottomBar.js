@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 export default function BottomBar({ todayList }) {
     const [percentage, setPercentage] = useState(0);
-    console.log(todayList);
+
     useEffect(() => {
         setPercentage(() => {
             let numberTasksDone = todayList.reduce((preValue, habit) => {
@@ -14,7 +14,6 @@ export default function BottomBar({ todayList }) {
 
                 return preValue;
             }, 0);
-            console.log("number tasks done is " + numberTasksDone);
 
             return (numberTasksDone / todayList.length) * 100;
         });

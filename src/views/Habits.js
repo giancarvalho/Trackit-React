@@ -20,7 +20,7 @@ export default function Habits() {
     const [habitList, setHabitList] = useState(null);
     const [newHabit, setNewHabit] = useState({ name: "", days: [] });
     const today = new Date().getDay();
-    console.log(newHabit);
+
     useEffect(() => {
         if (user) {
             getHabitList(user.token).then((response) => {
@@ -43,16 +43,23 @@ export default function Habits() {
             return;
         }
 
-        deleteFromTodayList(targetHabit);
+        updateTodayList({ targetHabit, isDelete: true });
         setHabitList(habitList.filter((habit) => habit.id !== targetHabit.id));
     }
 
-    function deleteFromTodayList(targetHabit) {
-        if (targetHabit.days.includes(today)) {
+    function updateTodayList({ targetHabit, isDelete }) {
+        if (!targetHabit.days.includes(today)) return;
+
+        if (isDelete) {
             setTodayList(
                 todayList.filter((habit) => habit.id !== targetHabit.id)
             );
         }
+
+        setTodayList((todayList) => [
+            { ...targetHabit, currentSequence: 0, highestSequence: 0 },
+            ...todayList,
+        ]);
     }
 
     //returns a list of habit cards or a message if list is empty
@@ -87,6 +94,7 @@ export default function Habits() {
                         switchHabitForm={switchHabitForm}
                         newHabit={newHabit}
                         setNewHabit={setNewHabit}
+                        updateTodayList={updateTodayList}
                         updateHabitList={updateHabitList}
                     />
                 )}
