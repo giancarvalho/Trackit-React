@@ -54,6 +54,7 @@ export default function Habits() {
             setTodayList(
                 todayList.filter((habit) => habit.id !== targetHabit.id)
             );
+            return;
         }
 
         setTodayList((todayList) => [
