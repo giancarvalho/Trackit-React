@@ -3,20 +3,13 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import calcProgress from "../scripts/calcProgress";
 
 export default function BottomBar({ todayList }) {
     const [percentage, setPercentage] = useState(0);
 
     useEffect(() => {
-        setPercentage(() => {
-            let numberTasksDone = todayList.reduce((preValue, habit) => {
-                if (habit.done) return preValue + 1;
-
-                return preValue;
-            }, 0);
-
-            return (numberTasksDone / todayList.length) * 100;
-        });
+        setPercentage(() => calcProgress(todayList));
     }, [todayList]);
 
     return (

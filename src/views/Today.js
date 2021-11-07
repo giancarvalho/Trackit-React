@@ -5,15 +5,22 @@ import { Main, HabitsContainer, Title } from "../components/shared/stylesApp";
 import getFormatedDate from "../scripts/getFormatedDate";
 import TodayHabitCard from "../components/todayHabitCard";
 import TodayListContext from "../contexts/TodayListContext";
+import calcProgress from "../scripts/calcProgress";
 
 export default function Today() {
     let { user } = useContext(UserContext);
     const { todayList } = useContext(TodayListContext);
+    const progress = calcProgress(todayList);
 
     return (
         <Main>
             <TitleContainer>
                 <Title>{getFormatedDate()}</Title>
+                {progress === 0 ? (
+                    <p>No habits done yet</p>
+                ) : (
+                    <p className="done">{progress.toFixed()}% habits done</p>
+                )}
             </TitleContainer>
             <HabitsContainer>
                 {todayList.length === 0 ? (
@@ -35,7 +42,7 @@ const TitleContainer = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 60px;
+    height: 90px;
     width: 100%;
 
     p {
