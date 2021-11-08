@@ -16,7 +16,7 @@ export default function Today() {
         <Main>
             <TitleContainer>
                 <Title>{getFormatedDate()}</Title>
-                {progress === 0 ? (
+                {progress === 0 || isNaN(progress) ? (
                     <p>No habits done yet</p>
                 ) : (
                     <p className="done">{progress.toFixed()}% habits done</p>

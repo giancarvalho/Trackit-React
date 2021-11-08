@@ -27,9 +27,13 @@ export default function SignUp() {
         registerRequest(form)
             .then(() => history.push("/"))
             .catch((error) => {
-                alert(
-                    "Ops, we can't reach our server at the moment. Check your connection and reload the page."
-                );
+                if (error.response.status === 409)
+                    alert("This user is already registered");
+                else
+                    alert(
+                        "Ops, we can't reach our server at the moment. Check your connection and reload the page."
+                    );
+
                 setDisabled(false);
             });
     }

@@ -54,7 +54,10 @@ export default function Home() {
                 history.push("/today");
             })
             .catch((error) => {
-                alert("Password incorrect");
+                if (error.response.status === 404)
+                    alert("User is not registered.");
+                else alert("Password incorrect");
+
                 setDisabled(false);
             });
     }
@@ -72,12 +75,14 @@ export default function Home() {
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            required
                         />
                         <Input
                             type="password"
                             placeholder="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            required
                         />
                         <SubmitButton
                             type="submit"
