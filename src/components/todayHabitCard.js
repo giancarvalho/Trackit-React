@@ -16,8 +16,8 @@ export default function TodayHabitCard({ habit, user }) {
     function checkHabit() {
         const operation = checked ? "uncheck" : "check";
         setChecked(!checked);
-        updateTodayList();
         recalcSequences(operation);
+        updateTodayList();
 
         checkHabitRequest(habit.id, operation, user.token).catch((error) => {
             setChecked(!checked);
@@ -32,7 +32,10 @@ export default function TodayHabitCard({ habit, user }) {
         setTodayList(
             todayList.map((todayHabit) => {
                 if (todayHabit.id === habit.id)
-                    return { ...todayHabit, done: !checked };
+                    return {
+                        ...todayHabit,
+                        done: !checked,
+                    };
 
                 return todayHabit;
             })

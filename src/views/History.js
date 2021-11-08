@@ -184,6 +184,7 @@ const PopUpContainer = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
     min-height: 40vh;
+    max-height: 50%;
     width: 80vw;
     background-color: #fff;
     box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.15);
@@ -194,6 +195,10 @@ const PopUpContainer = styled.div`
         font-size: 20px;
         color: #126ba5;
         margin-bottom: 15px;
+    }
+    ul {
+        height: 30vh;
+        overflow-y: scroll;
     }
 
     li {

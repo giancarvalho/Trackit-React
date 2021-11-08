@@ -53,15 +53,14 @@ export default function HabitForm({
     }
 
     function create() {
-        updateHabitList(newHabit, "add");
         createHabitRequest(newHabit, user.token)
             .then((response) => {
+                updateHabitList(newHabit, "add");
                 switchHabitForm();
                 updateTodayList({ targetHabit: response.data });
                 setNewHabit({ name: "", days: [] });
             })
             .catch((error) => {
-                updateTodayList({ targetHabit: newHabit, isDelete: true });
                 alert("An error occurred. Please, refresh the page.");
                 setDisabled(false);
             });

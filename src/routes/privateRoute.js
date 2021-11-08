@@ -6,10 +6,13 @@ import TopBar from "../components/TopBar";
 import BottomBar from "../components/BottomBar";
 import { getTodayHabitList } from "../services/trackitRequests";
 import TodayListContext from "../contexts/TodayListContext";
+import { useLocation } from "react-router";
 
 export default function PrivateRoute({ element: Element, path, ...rest }) {
     const { user } = useContext(UserContext);
     const [todayList, setTodayList] = useState([]);
+    const location = useLocation();
+    const isTodayPage = location.pathname === "/today";
 
     useEffect(() => {
         if (user.token) {
@@ -19,7 +22,7 @@ export default function PrivateRoute({ element: Element, path, ...rest }) {
                 setTodayList(list);
             });
         }
-    }, [user]);
+    }, [user, isTodayPage]);
 
     return (
         <Route exact path={path}>
