@@ -43,21 +43,19 @@ export default function TodayHabitCard({ habit, user }) {
     }
 
     function recalcSequences(operation) {
-        if (operation === "check") {
-            const newSequence = sequences.current + 1;
-            if (newSequence >= sequences.highest) {
-                setSequences({ current: newSequence, highest: newSequence });
-                return;
-            }
+        const newSequence =
+            operation === "check"
+                ? sequences.current + 1
+                : sequences.current - 1;
 
+        if (sequences.current >= sequences.highest) {
+            setSequences({
+                current: newSequence,
+                highest: newSequence,
+            });
+        } else {
             setSequences({ ...sequences, current: newSequence });
-            return;
         }
-
-        setSequences({
-            current: sequences.current - 1,
-            highest: habit.highestSequence,
-        });
     }
     return (
         <TodayHabitContainer>
